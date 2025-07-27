@@ -85,12 +85,10 @@ fetch_command() {
 create_ccsm_script() {
     print_status "Creating ccsm script..."
     
-    cat > "$CCSM_PATH" << 'EOF'
+    cat > "$CCSM_PATH" << 'CCSM_SCRIPT_EOF'
 #!/bin/bash
 
 # Claude Code Slash Command Manager (ccsm)
-# Manage Claude Code slash commands
-
 VERSION="1.0.0"
 CLAUDE_DIR="/Users/$(whoami)/.claude"
 COMMANDS_DIR="${CLAUDE_DIR}/commands"
@@ -127,7 +125,7 @@ show_help() {
     echo ""
     echo "Commands:"
     echo "  list              List all installed slash commands"
-    echo "  install <url>     Install a slash command from a gist URL"
+    echo "  install <url>     Install from gist, GitHub repo, or clipboard"
     echo "  remove <name>     Remove an installed slash command"
     echo "  show <name>       Display the content of a slash command"
     echo "  update <name>     Update a slash command from its source"
@@ -136,6 +134,8 @@ show_help() {
     echo "Examples:"
     echo "  ccsm list"
     echo "  ccsm install https://gist.github.com/user/gist_id"
+    echo "  ccsm install https://github.com/user/repo/blob/main/commands/commit.md"
+    echo "  ccsm install clipboard"
     echo "  ccsm remove commit"
     echo "  ccsm show commit"
 }
@@ -156,31 +156,44 @@ list_commands() {
     fi
 }
 
-# Install command from gist, GitHub repo, or clipboard
-install_command() {
-    local source="$1"
+# Remove command
+remove_command() {
+    local command_name="$1"
     
-    if [ -z "$source" ]; then
-        print_error "Please provide a source URL or use 'clipboard' to install from clipboard"
-        echo "Usage: ccsm install <url|clipboard>"
-        echo "Examples:"
-        echo "  ccsm install https://gist.github.com/user/gist_id"
-        echo "  ccsm install https://github.com/user/repo/blob/main/commands/commit.md"
-        echo "  ccsm install clipboard"
+    if [ -z "$command_name" ]; then
+        print_error "Please provide a command name"
+        echo "Usage: ccsm remove <command_name>"
         return 1
     fi
     
-    # Check if installing from clipboard
-    if [ "$source" = "clipboard" ] || [ "$source" = "clip" ] || [ "$source" = "paste" ]; then
-        install_from_clipboard
-    elif [[ "$source" =~ github\.com/.*/blob/ ]]; then
-        # Handle GitHub repo file
-        install_from_github_repo "$source"
-    elif [[ "$source" =~ gist\.github\.com ]]; then
-        # Handle gist
-        install_from_gist "$source"
+    local command_file="${COMMANDS_DIR}/${command_name}.md"
+    local meta_file="${command_file}.meta"
+    
+    if [ -f "$command_file" ]; then
+        rm -f "$command_file" "$meta_file"
+        print_success "Removed '${command_name}' command"
     else
-        print_error "Invalid source. Use a GitHub URL or 'clipboard'"
+        print_error "Command '${command_name}' not found"
+        return 1
+    fi
+}
+
+# Show command content
+show_command() {
+    local command_name="$1"
+    
+    if [ -z "$command_name" ]; then
+        print_error "Please provide a command name"
+        echo "Usage: ccsm show <command_name>"
+        return 1
+    fi
+    
+    local command_file="${COMMANDS_DIR}/${command_name}.md"
+    
+    if [ -f "$command_file" ]; then
+        cat "$command_file"
+    else
+        print_error "Command '${command_name}' not found"
         return 1
     fi
 }
@@ -189,7 +202,6 @@ install_command() {
 install_from_clipboard() {
     print_status "Installing command from clipboard..."
     
-    # Read command name
     echo -n "Enter command name (e.g., 'commit', 'stash'): "
     read -r command_name
     
@@ -198,15 +210,12 @@ install_from_clipboard() {
         return 1
     fi
     
-    # Sanitize command name
     command_name=$(echo "$command_name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g')
     
-    # Create directories if needed
     mkdir -p "$COMMANDS_DIR"
     
     local output_file="${COMMANDS_DIR}/${command_name}.md"
     
-    # Check if command already exists
     if [ -f "$output_file" ]; then
         echo -n "Command '${command_name}' already exists. Overwrite? (y/n): "
         read -r response
@@ -216,22 +225,17 @@ install_from_clipboard() {
         fi
     fi
     
-    # Get clipboard content
     print_status "Reading from clipboard..."
     
-    # Try different clipboard commands depending on OS
     local clipboard_content=""
     if command -v pbpaste &> /dev/null; then
-        # macOS
         clipboard_content=$(pbpaste)
     elif command -v xclip &> /dev/null; then
-        # Linux with xclip
         clipboard_content=$(xclip -selection clipboard -o)
     elif command -v xsel &> /dev/null; then
-        # Linux with xsel
         clipboard_content=$(xsel --clipboard --output)
     else
-        print_error "No clipboard utility found. Please install pbpaste (macOS), xclip, or xsel (Linux)"
+        print_error "No clipboard utility found"
         return 1
     fi
     
@@ -240,46 +244,19 @@ install_from_clipboard() {
         return 1
     fi
     
-    # Validate content looks like a command
-    if ! echo "$clipboard_content" | grep -q "^#"; then
-        print_warning "Content doesn't appear to be a valid command (should start with # header)"
-        echo -n "Continue anyway? (y/n): "
-        read -r response
-        if [ "$response" != "y" ] && [ "$response" != "Y" ]; then
-            return 1
-        fi
-    fi
-    
-    # Save to file
     echo "$clipboard_content" > "$output_file"
     
-    # Store metadata
     echo "# Source: Clipboard" > "${output_file}.meta"
     echo "# Installed: $(date)" >> "${output_file}.meta"
     
     print_success "Successfully installed '${command_name}' command from clipboard"
-    
-    # Show preview
-    echo ""
-    echo "Preview of installed command:"
-    echo "---"
-    head -n 10 "$output_file"
-    if [ $(wc -l < "$output_file") -gt 10 ]; then
-        echo "..."
-        echo "(Full command saved to ${output_file})"
-    fi
-    echo "---"
 }
 
-# Install from GitHub repository file
+# Install from GitHub repo
 install_from_github_repo() {
     local repo_url="$1"
     
-    # Convert blob URL to raw URL
-    # https://github.com/user/repo/blob/main/file.md -> https://raw.githubusercontent.com/user/repo/main/file.md
     local raw_url=$(echo "$repo_url" | sed 's|github\.com|raw.githubusercontent.com|' | sed 's|/blob/|/|')
-    
-    # Extract filename from URL
     local filename=$(basename "$repo_url")
     
     if [[ ! "$filename" =~ \.md$ ]]; then
@@ -287,25 +264,20 @@ install_from_github_repo() {
         return 1
     fi
     
-    # Extract command name from filename
     local command_name=$(basename "$filename" .md | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g')
     
     print_status "Installing '${command_name}' command from GitHub repo..."
     
-    # Create directories if needed
     mkdir -p "$COMMANDS_DIR"
-    
     local output_file="${COMMANDS_DIR}/${command_name}.md"
     
     if curl -s -L "$raw_url" -o "$output_file"; then
-        # Check if file was actually downloaded (not 404)
         if [ ! -s "$output_file" ] || grep -q "404: Not Found" "$output_file"; then
             rm -f "$output_file"
             print_error "File not found at the specified URL"
             return 1
         fi
         
-        # Store metadata
         echo "# Source: $repo_url" > "${output_file}.meta"
         echo "# Installed: $(date)" >> "${output_file}.meta"
         print_success "Successfully installed '${command_name}' command"
@@ -319,158 +291,7 @@ install_from_github_repo() {
 install_from_gist() {
     local gist_url="$1"
     
-    # Extract gist ID and username
-    local gist_id=$(echo "$gist_url" | grep -oE '[a-f0-9]{32}
-
-# Remove command
-remove_command() {
-    local command_name="$1"
-    
-    if [ -z "$command_name" ]; then
-        print_error "Please provide a command name"
-        echo "Usage: ccsm remove <command_name>"
-        return 1
-    fi
-    
-    local command_file="${COMMANDS_DIR}/${command_name}.md"
-    local meta_file="${command_file}.meta"
-    
-    if [ -f "$command_file" ]; then
-        rm -f "$command_file" "$meta_file"
-        print_success "Removed '${command_name}' command"
-    else
-        print_error "Command '${command_name}' not found"
-        return 1
-    fi
-}
-
-# Show command content
-show_command() {
-    local command_name="$1"
-    
-    if [ -z "$command_name" ]; then
-        print_error "Please provide a command name"
-        echo "Usage: ccsm show <command_name>"
-        return 1
-    fi
-    
-    local command_file="${COMMANDS_DIR}/${command_name}.md"
-    
-    if [ -f "$command_file" ]; then
-        cat "$command_file"
-    else
-        print_error "Command '${command_name}' not found"
-        return 1
-    fi
-}
-
-# Update command
-update_command() {
-    local command_name="$1"
-    
-    if [ -z "$command_name" ]; then
-        print_error "Please provide a command name"
-        echo "Usage: ccsm update <command_name>"
-        return 1
-    fi
-    
-    local meta_file="${COMMANDS_DIR}/${command_name}.md.meta"
-    
-    if [ ! -f "$meta_file" ]; then
-        print_error "No metadata found for '${command_name}' command"
-        return 1
-    fi
-    
-    # Extract source URL from metadata
-    local source_url=$(grep "^# Source:" "$meta_file" | cut -d' ' -f3)
-    
-    if [ -z "$source_url" ]; then
-        print_error "No source URL found in metadata"
-        return 1
-    fi
-    
-    if [ "$source_url" = "Clipboard" ]; then
-        print_error "Cannot update commands installed from clipboard"
-        print_status "Please reinstall using 'ccsm install clipboard'"
-        return 1
-    fi
-    
-    print_status "Updating '${command_name}' command from ${source_url}..."
-    
-    # Remove and reinstall
-    remove_command "$command_name" > /dev/null 2>&1
-    install_command "$source_url"
-}
-
-# Main command handler
-case "$1" in
-    list|ls)
-        list_commands
-        ;;
-    install|add)
-        install_command "$2"
-        ;;
-    remove|rm)
-        remove_command "$2"
-        ;;
-    show|cat)
-        show_command "$2"
-        ;;
-    update|up)
-        update_command "$2"
-        ;;
-    help|--help|-h|"")
-        show_help
-        ;;
-    *)
-        print_error "Unknown command: $1"
-        echo "Run 'ccsm help' for usage information"
-        exit 1
-        ;;
-esac
-EOF
-
-    chmod +x "$CCSM_PATH"
-    print_success "ccsm script created"
-}
-
-# Main installation process
-main() {
-    echo "Claude Code Slash Command Manager Installer"
-    echo "=========================================="
-    echo ""
-    
-    # Create directories
-    create_directories
-    
-    # Fetch commit command from gist
-    fetch_command "https://gist.github.com/AdamManuel-dev/8fbe3d061acc67a26a477ed01853ce78" "commit"
-    
-    # Create ccsm script
-    create_ccsm_script
-    
-    # Final instructions
-    echo ""
-    print_success "Installation complete!"
-    echo ""
-    echo "Installed components:"
-    echo "  - Claude commands directory: ${COMMANDS_DIR}"
-    echo "  - ccsm command: ${CCSM_PATH}"
-    echo "  - commit slash command: ${COMMANDS_DIR}/commit.md"
-    echo ""
-    echo "To use ccsm from anywhere, add it to your PATH:"
-    echo "  echo 'export PATH=\"\$PATH:/Users/${USERNAME}\"' >> ~/.zshrc"
-    echo "  source ~/.zshrc"
-    echo ""
-    echo "Then you can use:"
-    echo "  ccsm list              # List installed commands"
-    echo "  ccsm show commit       # View the commit command"
-    echo "  ccsm install <gist>    # Install new commands"
-    echo "  ccsm help              # Show all available commands"
-}
-
-# Run main installation
-main)
+    local gist_id=$(echo "$gist_url" | grep -oE '[a-f0-9]{32}$')
     local username=$(echo "$gist_url" | sed -n 's|https://gist.github.com/\([^/]*\)/.*|\1|p')
     
     if [ -z "$gist_id" ] || [ -z "$username" ]; then
@@ -478,11 +299,9 @@ main)
         return 1
     fi
     
-    # Fetch gist metadata
     local api_url="https://api.github.com/gists/${gist_id}"
     local gist_data=$(curl -s "$api_url")
     
-    # Extract filename (first .md file)
     local filename=$(echo "$gist_data" | grep -o '"filename": "[^"]*\.md"' | head -1 | cut -d'"' -f4)
     
     if [ -z "$filename" ]; then
@@ -490,20 +309,16 @@ main)
         return 1
     fi
     
-    # Extract command name from filename
     local command_name=$(basename "$filename" .md | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g')
     
     print_status "Installing '${command_name}' command from gist..."
     
-    # Create directories if needed
     mkdir -p "$COMMANDS_DIR"
     
-    # Download the file
     local raw_url="https://gist.githubusercontent.com/${username}/${gist_id}/raw/"
     local output_file="${COMMANDS_DIR}/${command_name}.md"
     
     if curl -s -L "$raw_url" -o "$output_file"; then
-        # Store metadata
         echo "# Source: $gist_url" > "${output_file}.meta"
         echo "# Installed: $(date)" >> "${output_file}.meta"
         print_success "Successfully installed '${command_name}' command"
@@ -513,44 +328,23 @@ main)
     fi
 }
 
-# Remove command
-remove_command() {
-    local command_name="$1"
+# Install command main function
+install_command() {
+    local source="$1"
     
-    if [ -z "$command_name" ]; then
-        print_error "Please provide a command name"
-        echo "Usage: ccsm remove <command_name>"
+    if [ -z "$source" ]; then
+        print_error "Please provide a source URL or use 'clipboard'"
         return 1
     fi
     
-    local command_file="${COMMANDS_DIR}/${command_name}.md"
-    local meta_file="${command_file}.meta"
-    
-    if [ -f "$command_file" ]; then
-        rm -f "$command_file" "$meta_file"
-        print_success "Removed '${command_name}' command"
+    if [ "$source" = "clipboard" ] || [ "$source" = "clip" ] || [ "$source" = "paste" ]; then
+        install_from_clipboard
+    elif [[ "$source" =~ github\.com/.*/blob/ ]]; then
+        install_from_github_repo "$source"
+    elif [[ "$source" =~ gist\.github\.com ]]; then
+        install_from_gist "$source"
     else
-        print_error "Command '${command_name}' not found"
-        return 1
-    fi
-}
-
-# Show command content
-show_command() {
-    local command_name="$1"
-    
-    if [ -z "$command_name" ]; then
-        print_error "Please provide a command name"
-        echo "Usage: ccsm show <command_name>"
-        return 1
-    fi
-    
-    local command_file="${COMMANDS_DIR}/${command_name}.md"
-    
-    if [ -f "$command_file" ]; then
-        cat "$command_file"
-    else
-        print_error "Command '${command_name}' not found"
+        print_error "Invalid source. Use a GitHub URL or 'clipboard'"
         return 1
     fi
 }
@@ -561,7 +355,6 @@ update_command() {
     
     if [ -z "$command_name" ]; then
         print_error "Please provide a command name"
-        echo "Usage: ccsm update <command_name>"
         return 1
     fi
     
@@ -572,7 +365,6 @@ update_command() {
         return 1
     fi
     
-    # Extract source URL from metadata
     local source_url=$(grep "^# Source:" "$meta_file" | cut -d' ' -f3)
     
     if [ -z "$source_url" ]; then
@@ -580,14 +372,18 @@ update_command() {
         return 1
     fi
     
-    print_status "Updating '${command_name}' command from ${source_url}..."
+    if [ "$source_url" = "Clipboard" ]; then
+        print_error "Cannot update commands installed from clipboard"
+        return 1
+    fi
     
-    # Remove and reinstall
+    print_status "Updating '${command_name}' command..."
+    
     remove_command "$command_name" > /dev/null 2>&1
     install_command "$source_url"
 }
 
-# Main command handler
+# Main switch
 case "$1" in
     list|ls)
         list_commands
@@ -609,11 +405,10 @@ case "$1" in
         ;;
     *)
         print_error "Unknown command: $1"
-        echo "Run 'ccsm help' for usage information"
         exit 1
         ;;
 esac
-EOF
+CCSM_SCRIPT_EOF
 
     chmod +x "$CCSM_PATH"
     print_success "ccsm script created"
