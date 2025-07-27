@@ -1,5 +1,12 @@
 #!/bin/bash
-
+# 
+# @fileoverview Claude Code Slash Command Manager (ccsm) installer script
+# 
+# Features: Auto-installs ccsm CLI, creates commands directory, fetches commit command from gist
+# Main APIs: create_directories(), fetch_command(), create_ccsm_script(), install workflow
+# Constraints: Requires curl, bash 4+, creates ~/.claude/commands/, installs to ~/ccsm
+# Patterns: Color-coded output, error handling with set -e, modular functions
+# 
 # Claude Code Slash Command Manager (ccsm) Installer
 # This script installs ccsm and fetches slash commands from GitHub gists
 #

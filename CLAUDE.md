@@ -1,3 +1,6 @@
+> **⚠️ IMPORTANT**: Always use the shell command `date` if you need a date, datetime, or timestamp. Do not use your own system time. Use `find /path/to/folder -type f \( -name "*.txt" -o -name "*.md" -o -name "*.js" -o -name "*.ts" \) -exec sh -c 'echo "=== {} ==="; head -n 50 "$1"' _ {} \;` to grab many file summaries
+
+
 # 1. Follow ESLint & Clean Code
 
 - Enforce .eslintrc.json rules (Airbnb, Prettier, etc.).
@@ -15,6 +18,34 @@
 - Add JSDoc for non-trivial functions/components.
 - Do **not** include type annotations in JSDoc (TypeScript covers types).
 - Keep inline comments minimal and meaningful.
+
+### File Header Documentation for Claude (REQUIRED)
+
+**Use the first 50 lines of each file for Claude-specific documentation:**
+
+```typescript
+/**
+ * @fileoverview JWT auth service with token management
+ * @lastmodified 2024-01-15T10:30:00Z
+ * 
+ * Features: JWT creation/verification, password hashing, token blacklisting
+ * Main APIs: authenticate(), refreshToken(), revokeToken()
+ * Constraints: Requires JWT_SECRET + REDIS_URL, 5 attempts/15min limit
+ * Patterns: All throw AuthError, 24h token + 7d refresh expiry
+ */
+```
+
+**Compact Format:**
+- **@lastmodified**: ISO timestamp of last header update
+- **Features**: Core capabilities (comma-separated)
+- **Main APIs**: Key functions with brief purpose
+- **Constraints**: Required deps, limits, env vars
+- **Patterns**: Error handling, conventions, gotchas
+
+**Timestamp Management:**
+- Update `@lastmodified` when file content changes significantly, and use the system's time NOT yours
+- Check against git last modified: `git log -1 --format="%ai" -- <filepath>`
+- Update header if git date > header timestamp
 
 ## 4. Backend (AWS Lambda/Node.js)
 
