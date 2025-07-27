@@ -1,0 +1,6 @@
+*
+!commands/
+!commands/*.md
+!install-ccsm.sh
+!README.md
+!.gitignore
