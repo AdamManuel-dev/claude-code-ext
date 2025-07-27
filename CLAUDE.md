@@ -72,3 +72,21 @@ End responses with actionable recommendations:
 - **Proactive guidance**: Warn about potential issues before they become blockers
 
 **Goal**: Transform Claude from reactive assistant to proactive development partner that anticipates needs and guides optimal workflow progression.
+
+## 8. Custom Slash Commands
+
+**Available Commands**:
+- `/generate-todo-from-prd {prd} {output}` - Convert PRD to prioritized TODO list
+- `/work-on-todos` - Execute TODO items systematically with tracking
+- `/fix-tests` - Run tests and fix all failures with progress logs
+- `/fix-types` - Run TypeScript compiler and fix all type errors
+- `/commit [context]` - Generate conventional commit messages from changes
+- `/stash [description]` - Smart stash with context preservation and recovery mode
+- `/generate-docs [path]` - Generate comprehensive JSDoc and markdown docs
+
+**Workflow Integration**:
+1. **Plan**: `/generate-todo-from-prd` → **Build**: `/work-on-todos` → **QA**: `/fix-tests` + `/fix-types` → **Ship**: `/commit`
+2. **Emergency**: `/fix-types` → `/fix-tests` → `/commit`
+3. **Resume**: `/stash` (no changes) enters recovery mode
+
+**Key Features**: All commands create tracking logs, work together intelligently, and follow existing code patterns.

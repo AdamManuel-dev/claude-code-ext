@@ -5,3 +5,11 @@
 !README.md
 !.gitignore
 !CLAUDE.md
+!MCPs/
+!MCPs/*.sh
+!MCPs/mcp-postman/
+!MCPs/mcp-postman/**
+!MCPs/mcp-server-browserbase/
+!MCPs/mcp-server-browserbase/**
+!MCPs/mcp-server-simulator-ios-idb/
+!MCPs/mcp-server-simulator-ios-idb/**
