@@ -79,8 +79,9 @@ Then, systematically extract tasks from these sections:
 **Output Format Requirements:**
 
 Structure the TODO list as a markdown file with:
-- Priority Levels (P0-P3)
+- Priority Levels (P1-P5)
 - Task Estimates (S/M/L/XL)
+- Task Value Estimate (S/M/L)
 - Dependencies clearly marked
 - Owner assignments (TBD initially)
 - Phase/milestone grouping
