@@ -1,5 +1,57 @@
 # Claude Code Documentation Generation Prompt
 
+## Overview
+This is a comprehensive prompt for generating complete documentation for JavaScript/TypeScript codebases. It creates both inline JSDoc comments and external markdown documentation following industry best practices.
+
+## What This Prompt Does
+- **Analyzes** your entire codebase or a specific path to understand structure and patterns
+- **Generates** JSDoc comments for all undocumented functions, classes, and exports
+- **Creates** a complete documentation hierarchy including:
+  - Project README and architecture docs
+  - Module-specific documentation
+  - API reference guides
+  - Development and troubleshooting guides
+- **Follows** existing code standards and documentation patterns in your project
+- **Produces** professional-grade documentation suitable for teams and open source projects
+
+## Usage
+To use this prompt, simply provide it to Claude along with the path you want documented:
+
+```
+Generate comprehensive documentation for the specified path: ./src/api
+```
+
+Or for the entire project:
+```
+Generate comprehensive documentation for the entire project
+```
+
+## What You'll Get
+1. **Enhanced Source Code**: All functions and classes documented with proper JSDoc
+2. **Documentation Site**: Complete `docs/` directory with organized markdown files
+3. **Navigation**: Index files and cross-references between documentation
+4. **Examples**: Real code examples extracted from your codebase
+5. **Architecture**: High-level system diagrams and component relationships
+
+## Prerequisites
+- JavaScript or TypeScript codebase
+- Functions/classes that need documentation
+- Optional: Existing JSDoc patterns (will be detected and followed)
+
+## Output Structure
+```
+docs/
+├── INDEX.md              # Main navigation
+├── API.md                # Complete API reference
+├── ARCHITECTURE.md       # System design
+├── TROUBLESHOOTING.md    # Common issues
+├── modules/              # Per-module docs
+├── guides/               # Development guides
+└── files/                # Complex file docs
+```
+
+---
+
 Generate comprehensive documentation for the specified path (or entire project if no path provided) {path}.
 
 ## Setup phase:
@@ -33,7 +85,20 @@ Generate comprehensive documentation for the specified path (or entire project i
 
 ## For each undocumented or poorly documented function:
 
-1. Analyze the function:
+1. **First, add file header documentation** (if missing) following the CLAUDE.md standard:
+   ```typescript
+   /**
+    * @fileoverview [Brief description of file purpose]
+    * @lastmodified [ISO timestamp using system date command]
+    * 
+    * Features: [Core capabilities, comma-separated]
+    * Main APIs: [Key functions with brief purpose]
+    * Constraints: [Required deps, limits, env vars]
+    * Patterns: [Error handling, conventions, gotchas]
+    */
+   ```
+
+2. Analyze the function:
    - Parse function signature (name, parameters, return type)
    - Analyze function body to understand purpose
    - Track what it calls and what calls it
@@ -41,7 +106,7 @@ Generate comprehensive documentation for the specified path (or entire project i
    - Check test files for usage examples
    - Look for related functions to understand context
 
-2. Generate comprehensive JSDoc:
+3. Generate comprehensive JSDoc:
    ```javascript
    /**
     * [Descriptive summary of what function does]
@@ -366,6 +431,7 @@ Create docs/INDEX.md:
   ```
 - documentation-report.md with metrics and recommendations
 - Updated README.md with proper links to documentation
+- Notify the user of the result
 
 ## Auto-generate if tools available:
 - `jsdoc -c .jsdoc.json` for HTML docs

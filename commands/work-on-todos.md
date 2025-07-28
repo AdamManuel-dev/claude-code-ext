@@ -110,6 +110,7 @@ Final summary:
 - New TODOs discovered during implementation
 - Recommendations for future work
 - Time estimates vs actual for future planning
+- Notify the user that their review is required
 
 Remember:
 - Each TODO completion should leave code better than found

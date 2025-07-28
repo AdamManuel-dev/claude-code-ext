@@ -1,6 +1,6 @@
 > **⚠️ IMPORTANT**: Always use the shell command `date` if you need a date, datetime, or timestamp. Do not use your own system time.
 > **⚠️ IMPORTANT**: Use `find /path/to/folder -type f \( -name "*.txt" -o -name "*.md" -o -name "*.js" -o -name "*.ts" \) -exec sh -c 'echo "=== {} ==="; head -n 50 "$1"' _ {} \;` to grab many file summaries
-> **⚠️ IMPORTANT**: Use this command to get the users attention for when you need their input `osascript -e 'display notification "📢 Claude Code" with title "ENTER_MESSAGE_FOR_USER_HERE" sound name "Submarine"'`
+> **⚠️ IMPORTANT**: Use this command to get the users attention for when you need their input `osascript -e 'display notification "📢 [BRANCH_NAME]" with title "ENTER_MESSAGE_FOR_USER_HERE" sound name "Submarine"'`
 
 
 # 1. Follow ESLint & Clean Code
@@ -109,13 +109,14 @@
 ## 8. Custom Slash Commands
 
 **Available Commands**:
-- `/generate-todo-from-prd {prd} {output}` - Convert PRD to prioritized TODO list
-- `/work-on-todos` - Execute TODO items systematically with tracking
-- `/fix-tests` - Run tests and fix all failures with progress logs
-- `/fix-types` - Run TypeScript compiler and fix all type errors
 - `/commit [context]` - Generate conventional commit messages from changes
-- `/stash [description]` - Smart stash with context preservation and recovery mode
+- `/fix-tests` - Run tests and fix all failures with progress logs  
+- `/fix-types` - Run TypeScript compiler and fix all type errors
 - `/generate-docs [path]` - Generate comprehensive JSDoc and markdown docs
+- `/generate-todo-from-prd {prd} {output}` - Convert PRD to prioritized TODO list
+- `/header-optimization` - Add file header documentation to all source files
+- `/stash [description]` - Smart stash with context preservation and recovery mode
+- `/work-on-todos` - Execute TODO items systematically with tracking
 
 **Workflow Integration**:
 1. **Plan**: `/generate-todo-from-prd` → **Build**: `/work-on-todos` → **QA**: `/fix-tests` + `/fix-types` → **Ship**: `/commit`
