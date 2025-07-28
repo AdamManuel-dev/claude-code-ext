@@ -1,4 +1,15 @@
 #!/bin/bash
+
+##
+# @fileoverview Helper script for opening files/directories in Cursor IDE
+# @lastmodified 2025-07-28T06:08:48Z
+# 
+# Features: Smart Cursor detection, multiple fallback strategies, debug logging
+# Main APIs: Main path opening handler with cursor command and open -a fallbacks
+# Constraints: Requires either cursor CLI or Cursor.app, logs to /tmp/cursor-handler.log
+# Patterns: Absolute path resolution, priority CLI > App > default, comprehensive logging
+##
+
 # URL handler for opening paths in Cursor IDE
 # Usage: cursor-handler.sh "path"
 

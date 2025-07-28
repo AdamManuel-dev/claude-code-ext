@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##
+# @fileoverview Auto-acknowledge all active notifications (slash command)
+# @lastmodified 2025-07-28T06:08:48Z
+# 
+# Features: Auto-discover notification tracking files, bulk acknowledgment, summary reporting
+# Main APIs: Main execution with help system, notification scanning, file cleanup
+# Constraints: Requires /tmp directory access, works with send-notification.sh tracking files
+# Patterns: Glob pattern matching for /tmp/notify_*, safe file removal, human-readable timestamps
+##
+
 # Auto-acknowledge all active notifications (slash command)
 # Usage: ./ack-notifications.sh [help]
 

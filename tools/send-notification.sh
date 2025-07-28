@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##
+# @fileoverview Smart notification system with persistent reminders and acknowledgment
+# @lastmodified 2025-07-28T06:08:48Z
+# 
+# Features: Multi-stage reminders, tracking files, auto-aliases, comprehensive help system
+# Main APIs: Main notification sender, background reminder processes, acknowledgment system
+# Constraints: macOS only, requires notification permissions, creates /tmp tracking files
+# Patterns: Background process spawning, tracking file lifecycle, shell alias injection
+##
+
 # Smart notification system with acknowledgment
 # Usage: ./send-notification.sh "BRANCH_NAME" "MESSAGE" [skip_reminders]
 

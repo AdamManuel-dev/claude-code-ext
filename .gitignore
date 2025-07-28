@@ -14,6 +14,13 @@
 !MCPs/mcp-server-simulator-ios-idb/
 !MCPs/mcp-server-simulator-ios-idb/**
 !MCPs/how-to-install.md
+!MCPs/README.md
+!tools/README.md
+!documentation-report.md
+!QUICK_REFERENCE.md
+
+!docs/
+!docs/**
 !agents/
 !agents/**
 !tools/

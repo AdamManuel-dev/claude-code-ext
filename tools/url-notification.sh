@@ -1,10 +1,18 @@
 #!/bin/zsh
 
-###
+##
+# @fileoverview URL-based notification system with direct clicking support
+# @lastmodified 2025-07-28T06:08:48Z
+# 
+# Features: URL scheme handling, file path conversion, direct notification clicking
+# Main APIs: Main notification handler with URL/path detection and conversion
+# Constraints: macOS only, limited by osascript notification capabilities
+# Patterns: file:// URL conversion, path type detection, URL scheme support
+##
+
 # URL-Based Notification Script
 # Usage: ./url-notification.sh "BRANCH_NAME" "MESSAGE" ["URL_OR_PATH"]
 # The URL/path will be opened when user clicks the notification
-###
 
 BRANCH_NAME="${1:-Alert}"
 MESSAGE="${2:-Notification}"

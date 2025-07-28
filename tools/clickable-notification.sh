@@ -1,10 +1,18 @@
 #!/bin/zsh
 
-###
+##
+# @fileoverview Clickable notification system with Cursor IDE integration
+# @lastmodified 2025-07-28T06:08:48Z
+# 
+# Features: Terminal-notifier integration, Cursor IDE auto-opening, URL handling, AppleScript fallback
+# Main APIs: Main notification handler, cursor-handler.sh integration, terminal-notifier execution
+# Constraints: Requires terminal-notifier for best experience, macOS only, cursor command or Cursor.app
+# Patterns: Smart target detection (URLs vs files), graceful fallbacks, auto-current-directory
+##
+
 # Clickable Notification Script with Path/URL Opening
 # Uses terminal-notifier if available, falls back to AppleScript dialog
 # Usage: ./clickable-notification.sh "BRANCH_NAME" "MESSAGE" ["PATH_OR_URL"]
-###
 
 BRANCH_NAME="${1:-Alert}"
 MESSAGE="${2:-Notification}"

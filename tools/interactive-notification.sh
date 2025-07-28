@@ -1,10 +1,18 @@
 #!/bin/zsh
 
-###
+##
+# @fileoverview Interactive notifications with custom action button execution
+# @lastmodified 2025-07-28T06:08:48Z
+# 
+# Features: Action button dialogs, temporary script generation, command execution
+# Main APIs: Main notification with optional action, AppleScript dialog system
+# Constraints: macOS only, creates temporary scripts in /tmp, requires user interaction
+# Patterns: Temporary file lifecycle, AppleScript integration, shell script generation
+##
+
 # Interactive Notification Script with Action Button
 # Usage: ./interactive-notification.sh "BRANCH_NAME" "MESSAGE" ["ACTION_COMMAND"]
 # Example: ./interactive-notification.sh "main" "Build complete!" "open /path/to/logs"
-###
 
 # Parse arguments
 BRANCH_NAME="${1:-Alert}"
