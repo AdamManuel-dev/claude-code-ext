@@ -1,4 +1,6 @@
-> **⚠️ IMPORTANT**: Always use the shell command `date` if you need a date, datetime, or timestamp. Do not use your own system time. Use `find /path/to/folder -type f \( -name "*.txt" -o -name "*.md" -o -name "*.js" -o -name "*.ts" \) -exec sh -c 'echo "=== {} ==="; head -n 50 "$1"' _ {} \;` to grab many file summaries
+> **⚠️ IMPORTANT**: Always use the shell command `date` if you need a date, datetime, or timestamp. Do not use your own system time.
+> **⚠️ IMPORTANT**: Use `find /path/to/folder -type f \( -name "*.txt" -o -name "*.md" -o -name "*.js" -o -name "*.ts" \) -exec sh -c 'echo "=== {} ==="; head -n 50 "$1"' _ {} \;` to grab many file summaries
+> **⚠️ IMPORTANT**: Use this command to get the users attention for when you need their input `osascript -e 'display notification "📢 Claude Code" with title "ENTER_MESSAGE_FOR_USER_HERE" sound name "Submarine"'`
 
 
 # 1. Follow ESLint & Clean Code
@@ -75,8 +77,8 @@
 - **Identify workflow phase**: Planning, development, testing, documentation, or deployment
 - **Detect blockers**: Missing dependencies, failing builds, incomplete implementations
 
-### Suggestion Format
-End responses with actionable recommendations:
+### Suggestion Format 
+**⚠️ IMPORTANT** MUST end responses with actionable recommendations:
 ```markdown
 ## 💡 Suggested Next Steps
 - 🔧 `/fix-types` (3 TypeScript errors in auth module)
