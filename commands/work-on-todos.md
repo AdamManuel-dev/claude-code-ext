@@ -1,4 +1,16 @@
+<!--
+@fileoverview TODO task implementation and tracking automation command
+@lastmodified 2025-07-28T02:15:34Z
+
+Features: TODO parsing, priority handling, implementation tracking, dependency management
+Main APIs: TODO analysis, incremental implementation, testing integration, progress logging
+Constraints: Requires TODO.md file, creates implementation-log.md and backup files
+Patterns: Priority-based execution, comprehensive testing, backward compatibility
+-->
+
 Read TODO.md and parse all items. Create implementation-log.md to track progress.
+
+by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 Initial setup:
 1. Analyze TODO.md structure:

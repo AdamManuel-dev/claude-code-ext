@@ -9,10 +9,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Path to the stagehand compiled JavaScript file
 STAGEHAND_PATH="$SCRIPT_DIR/mcp-server-browserbase/stagehand/dist/index.js"
 
-# Check if the stagehand file exists
+# Check if the stagehand file exists and is readable
 if [ ! -f "$STAGEHAND_PATH" ]; then
     echo "Error: Stagehand file not found at $STAGEHAND_PATH"
     echo "Please ensure the stagehand project is built and the dist/index.js file exists."
+    exit 1
+fi
+
+if [ ! -r "$STAGEHAND_PATH" ]; then
+    echo "Error: Stagehand file is not readable at $STAGEHAND_PATH"
+    echo "Please check file permissions."
     exit 1
 fi
 
@@ -23,7 +29,15 @@ export OPENAI_API_KEY="${OPENAI_API_KEY}"
 
 # Generate a random context ID if not provided
 if [ -z "$CONTEXT_ID" ]; then
-    CONTEXT_ID=$(uuidgen 2>/dev/null || echo "context_$(date +%s)_$(openssl rand -hex 8)")
+    # Try multiple methods for generating unique ID
+    if command -v uuidgen >/dev/null 2>&1; then
+        CONTEXT_ID=$(uuidgen)
+    elif command -v openssl >/dev/null 2>&1; then
+        CONTEXT_ID="context_$(date +%s)_$(openssl rand -hex 8)"
+    else
+        # Fallback using built-in shell features
+        CONTEXT_ID="context_$(date +%s)_${RANDOM}"
+    fi
 fi
 export CONTEXT_ID
 

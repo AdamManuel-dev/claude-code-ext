@@ -1,4 +1,16 @@
+<!--
+@fileoverview PRD to TODO conversion automation for project planning
+@lastmodified 2025-07-28T02:15:34Z
+
+Features: PRD parsing, task prioritization, implementation planning, dependency analysis
+Main APIs: document analysis, task generation, priority assignment, timeline estimation
+Constraints: Requires structured PRD input, generates TODO.md with detailed tasks
+Patterns: Agile planning, incremental development, comprehensive task breakdown
+-->
+
 You are tasked with analyzing a Product Requirements Document (PRD) to generate a comprehensive TODO list. This is a critical project planning task that requires deep analysis and structured thinking.
+
+by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 **Context:**
 - PRD Location: {prd}

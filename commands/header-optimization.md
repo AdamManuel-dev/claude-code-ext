@@ -1,6 +1,6 @@
-# Header Optimization Command
-
 Systematically add file header documentation to all source files in this repository following the CLAUDE.md specification. Use `ADD_HEADER_TODO.md` for comprehensive task tracking.
+
+by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 ## Task Management
 

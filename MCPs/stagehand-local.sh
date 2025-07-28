@@ -39,13 +39,20 @@ start_chrome_debug() {
     fi
     pkill -f "Google Chrome"
     
-    # wait for chrome to close
-    for i in {1..30}; do
-        if ! pgrep -f "Google Chrome"; then
+    # Wait for chrome to close with timeout
+    local attempts=0
+    local max_attempts=30
+    while [ $attempts -lt $max_attempts ]; do
+        if ! pgrep -f "Google Chrome" >/dev/null 2>&1; then
             break
         fi
         sleep 1
+        ((attempts++))
     done
+    
+    if [ $attempts -eq $max_attempts ]; then
+        echo "Warning: Chrome processes may still be running"
+    fi
     
     echo "Starting Chrome in debug mode..."
     # Use the full Chrome executable path for better control
@@ -62,7 +69,10 @@ start_chrome_debug() {
     
     # Wait for Chrome to start and be ready
     echo "Waiting for Chrome to start..."
-    for i in {1..30}; do
+    local attempts=0
+    local max_attempts=30
+    
+    while [ $attempts -lt $max_attempts ]; do
         # Test the debug endpoint
         if response=$(curl -s "$CHROME_DEBUG_URL/json/version" 2>&1); then
             echo ""
@@ -72,8 +82,8 @@ start_chrome_debug() {
         fi
         
         # Every 5 seconds, check if the process is still running
-        if [ $((i % 5)) -eq 0 ]; then
-            if [ ! -z "$CHROME_PID" ] && ! kill -0 "$CHROME_PID" 2>/dev/null; then
+        if [ $((attempts % 5)) -eq 0 ] && [ $attempts -gt 0 ]; then
+            if [ -n "$CHROME_PID" ] && ! kill -0 "$CHROME_PID" 2>/dev/null; then
                 echo ""
                 echo "Error: Chrome process terminated unexpectedly"
                 return 1
@@ -82,6 +92,7 @@ start_chrome_debug() {
         
         echo -n "."
         sleep 1
+        ((attempts++))
     done
     echo ""
     
@@ -117,7 +128,15 @@ export LOCAL_CDP_URL="$CHROME_DEBUG_URL"
 
 # Generate a random context ID if not provided
 if [ -z "$CONTEXT_ID" ]; then
-    CONTEXT_ID=$(uuidgen 2>/dev/null || echo "context_$(date +%s)_$(openssl rand -hex 8)")
+    # Try multiple methods for generating unique ID
+    if command -v uuidgen >/dev/null 2>&1; then
+        CONTEXT_ID=$(uuidgen)
+    elif command -v openssl >/dev/null 2>&1; then
+        CONTEXT_ID="context_$(date +%s)_$(openssl rand -hex 8)"
+    else
+        # Fallback using built-in shell features
+        CONTEXT_ID="context_$(date +%s)_${RANDOM}"
+    fi
 fi
 export CONTEXT_ID
 

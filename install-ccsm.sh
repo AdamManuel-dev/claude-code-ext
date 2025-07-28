@@ -39,13 +39,40 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Get current username
+# Get current username and home directory
 USERNAME=$(whoami)
+# Sanitize username for security
+if [[ ! "$USERNAME" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+    print_error "Invalid username detected: $USERNAME"
+    exit 1
+fi
+HOME_DIR="${HOME:-$(eval echo ~$USERNAME)}"
 
-# Define paths
-CLAUDE_DIR="/Users/${USERNAME}/.claude"
+# Detect OS for cross-platform support
+OS_TYPE="$(uname -s)"
+case "${OS_TYPE}" in
+    Linux*)     MACHINE=Linux;;
+    Darwin*)    MACHINE=Mac;;
+    CYGWIN*)    MACHINE=Cygwin;;
+    MINGW*)     MACHINE=MinGw;;
+    MSYS*)      MACHINE=Git;;
+    *)          MACHINE="UNKNOWN:${OS_TYPE}"
+esac
+
+# Define portable paths
+CLAUDE_DIR="${HOME_DIR}/.claude"
 COMMANDS_DIR="${CLAUDE_DIR}/commands"
-CCSM_PATH="/Users/${USERNAME}/ccsm"
+
+# Determine installation directory based on OS
+if [[ "$MACHINE" == "Cygwin" || "$MACHINE" == "MinGw" || "$MACHINE" == "Git" ]]; then
+    # Windows-like environments
+    INSTALL_DIR="${HOME_DIR}/bin"
+    CCSM_PATH="${INSTALL_DIR}/ccsm"
+else
+    # Unix-like environments
+    INSTALL_DIR="${HOME_DIR}/.local/bin"
+    CCSM_PATH="${INSTALL_DIR}/ccsm"
+fi
 
 # Function to print colored output
 print_status() {
@@ -63,8 +90,33 @@ print_error() {
 # Function to create directories
 create_directories() {
     print_status "Creating directories..."
-    mkdir -p "${COMMANDS_DIR}"
-    print_success "Directories created"
+    
+    # Create Claude commands directory
+    if ! mkdir -p "${COMMANDS_DIR}"; then
+        print_error "Failed to create commands directory: ${COMMANDS_DIR}"
+        exit 1
+    fi
+    
+    # Create installation directory for ccsm binary
+    if ! mkdir -p "${INSTALL_DIR}"; then
+        print_error "Failed to create installation directory: ${INSTALL_DIR}"
+        exit 1
+    fi
+    
+    # Verify directories are writable
+    if [[ ! -w "${COMMANDS_DIR}" ]]; then
+        print_error "Commands directory is not writable: ${COMMANDS_DIR}"
+        exit 1
+    fi
+    
+    if [[ ! -w "${INSTALL_DIR}" ]]; then
+        print_error "Installation directory is not writable: ${INSTALL_DIR}"
+        exit 1
+    fi
+    
+    print_success "Directories created successfully"
+    print_status "Commands directory: ${COMMANDS_DIR}"
+    print_status "Installation directory: ${INSTALL_DIR}"
 }
 
 # Function to fetch command from gist
@@ -78,9 +130,22 @@ fetch_command() {
     # Extract raw URL from gist URL
     # Convert gist.github.com URL to raw githubusercontent.com URL
     local gist_id=$(echo "$gist_url" | grep -oE '[a-f0-9]{32}$')
+    
+    # Validate gist_id extraction
+    if [ -z "$gist_id" ]; then
+        print_error "Failed to extract gist ID from URL: $gist_url"
+        return 1
+    fi
+    
     local raw_url="https://gist.githubusercontent.com/AdamManuel-dev/${gist_id}/raw/"
     
     if curl -s -L "$raw_url" -o "$output_file"; then
+        # Verify the downloaded file is valid
+        if [ ! -s "$output_file" ] || grep -q "404: Not Found" "$output_file"; then
+            rm -f "$output_file"
+            print_error "Gist not found or empty: $gist_url"
+            return 1
+        fi
         print_success "Successfully downloaded ${command_name} command"
     else
         print_error "Failed to download ${command_name} command"
@@ -259,9 +324,39 @@ install_from_clipboard() {
     print_success "Successfully installed '${command_name}' command from clipboard"
 }
 
+# Validate URL to prevent SSRF attacks
+validate_url() {
+    local url="$1"
+    
+    # Check if URL starts with https://
+    if [[ ! "$url" =~ ^https:// ]]; then
+        print_error "Only HTTPS URLs are allowed"
+        return 1
+    fi
+    
+    # Check for allowed domains only
+    if [[ ! "$url" =~ ^https://(github\.com|gist\.github\.com)/ ]]; then
+        print_error "Only GitHub and GitHub Gist URLs are allowed"
+        return 1
+    fi
+    
+    # Check for suspicious patterns
+    if [[ "$url" =~ (\.\./|%2e%2e|%2f|localhost|127\.0\.0\.1|0\.0\.0\.0|::1) ]]; then
+        print_error "Suspicious URL pattern detected"
+        return 1
+    fi
+    
+    return 0
+}
+
 # Install from GitHub repo
 install_from_github_repo() {
     local repo_url="$1"
+    
+    # Validate URL first
+    if ! validate_url "$repo_url"; then
+        return 1
+    fi
     
     local raw_url=$(echo "$repo_url" | sed 's|github\.com|raw.githubusercontent.com|' | sed 's|/blob/|/|')
     local filename=$(basename "$repo_url")
@@ -278,7 +373,7 @@ install_from_github_repo() {
     mkdir -p "$COMMANDS_DIR"
     local output_file="${COMMANDS_DIR}/${command_name}.md"
     
-    if curl -s -L "$raw_url" -o "$output_file"; then
+    if curl -s -L --max-time 30 --max-filesize 1048576 "$raw_url" -o "$output_file"; then
         if [ ! -s "$output_file" ] || grep -q "404: Not Found" "$output_file"; then
             rm -f "$output_file"
             print_error "File not found at the specified URL"
@@ -298,11 +393,22 @@ install_from_github_repo() {
 install_from_gist() {
     local gist_url="$1"
     
+    # Validate URL first
+    if ! validate_url "$gist_url"; then
+        return 1
+    fi
+    
     local gist_id=$(echo "$gist_url" | grep -oE '[a-f0-9]{32}$')
     local username=$(echo "$gist_url" | sed -n 's|https://gist.github.com/\([^/]*\)/.*|\1|p')
     
     if [ -z "$gist_id" ] || [ -z "$username" ]; then
         print_error "Invalid gist URL format"
+        return 1
+    fi
+    
+    # Validate gist ID format (should be exactly 32 hex characters)
+    if [[ ! "$gist_id" =~ ^[a-f0-9]{32}$ ]]; then
+        print_error "Invalid gist ID format"
         return 1
     fi
     

@@ -1,5 +1,7 @@
 # Claude Code Documentation Generation Prompt
 
+by:(Adam Manuel)[https://github.com/AdamManuel-dev]
+
 ## Overview
 This is a comprehensive prompt for generating complete documentation for JavaScript/TypeScript codebases. It creates both inline JSDoc comments and external markdown documentation following industry best practices.
 

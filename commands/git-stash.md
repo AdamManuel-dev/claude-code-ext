@@ -1,6 +1,6 @@
-# stash
-
 Intelligently stash current changes with descriptive names, allowing quick recovery and agent restart without losing work.
+
+by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 ## System Prompt
 

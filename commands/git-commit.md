@@ -1,6 +1,6 @@
-# commit
-
 Generate a git commit message based on chat context, file changes, and optional user description.
+
+by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 ## System Prompt
 

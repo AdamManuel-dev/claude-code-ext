@@ -10,10 +10,25 @@ Before installing MCPs, ensure you have:
 
 - **Claude Desktop** installed and configured
 - **Terminal access** with appropriate permissions
-- **API Keys** for the services you want to use:
+- **Environment Configuration**: Copy `.env.example` to `.env` and configure your API keys:
   - Browserbase API key and Project ID (for Stagehand)
   - OpenAI API key (for Stagehand AI features)
 - **Node.js** installed (for Stagehand MCP)
+
+## Environment Setup
+
+1. **Copy the environment template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit `.env` with your actual API keys:**
+   ```bash
+   # Edit the .env file with your real values
+   BROWSERBASE_API_KEY=bb_live_YOUR_ACTUAL_KEY
+   BROWSERBASE_PROJECT_ID=YOUR_ACTUAL_PROJECT_ID
+   OPENAI_API_KEY=sk-YOUR_ACTUAL_OPENAI_KEY
+   ```
 
 ## MCP Installation Commands
 
@@ -30,23 +45,25 @@ Stagehand enables Claude to control web browsers for automation, testing, and da
 
 **Installation:**
 ```bash
+# Load environment variables and install
+source .env
 claude mcp add stagehand \
-  -e BROWSERBASE_API_KEY="bb_live_ePNJ3UhmkwGhBwMvJG3CZ46UVIY" \
-  -e BROWSERBASE_PROJECT_ID="PROJECT_ID" \
-  -e OPENAI_API_KEY="KEY" \
+  -e BROWSERBASE_API_KEY="$BROWSERBASE_API_KEY" \
+  -e BROWSERBASE_PROJECT_ID="$BROWSERBASE_PROJECT_ID" \
+  -e OPENAI_API_KEY="$OPENAI_API_KEY" \
   -- node /Users/adammanuel/Projects/MCPs/mcp-server-browserbase/stagehand/dist/index.js
 ```
 
 **Required Environment Variables:**
-- `BROWSERBASE_API_KEY`: Your Browserbase API key
-- `BROWSERBASE_PROJECT_ID`: Your Browserbase project identifier
-- `OPENAI_API_KEY`: OpenAI API key for AI-powered browser actions
+- `BROWSERBASE_API_KEY`: Your Browserbase API key (configured in `.env`)
+- `BROWSERBASE_PROJECT_ID`: Your Browserbase project identifier (configured in `.env`)
+- `OPENAI_API_KEY`: OpenAI API key for AI-powered browser actions (configured in `.env`)
 
 **Setup Steps:**
 1. Sign up for [Browserbase](https://browserbase.com) account
 2. Create a new project and copy the Project ID
 3. Generate an API key from your Browserbase dashboard
-4. Replace `PROJECT_ID` and `KEY` with your actual values
+4. Configure values in your `.env` file (see Environment Setup above)
 5. Run the installation command
 
 ### 2. Memory MCP (Knowledge Graphs)
