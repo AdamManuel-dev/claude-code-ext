@@ -16,6 +16,8 @@
 !MCPs/how-to-install.md
 !agents/
 !agents/**
+!tools/
+!tools/**
 !.env.example
 
 # Ignore tools folder (contains potentially sensitive review tools)

@@ -1,6 +1,9 @@
 > **⚠️ IMPORTANT**: Always use the shell command `date` if you need a date, datetime, or timestamp. Do not use your own system time.
-> **⚠️ IMPORTANT**: Use `find /path/to/folder -type f \( -name "*.txt" -o -name "*.md" -o -name "*.js" -o -name "*.ts" \) -exec sh -c 'echo "=== {} ==="; head -n 50 "$1"' _ {} \;` to grab many file summaries
-> **⚠️ IMPORTANT**: Use this command to get the users attention for when you need their input `osascript -e 'display notification "📢 [BRANCH_NAME]" with title "ENTER_MESSAGE_FOR_USER_HERE" sound name "Submarine"'`
+> **⚠️ IMPORTANT**: Use `/Users/adammanuel/.claude/tools/get-file-headers.sh ./path-to-search` to grab many file summaries
+> **⚠️ IMPORTANT**: Use `/Users/adammanuel/.claude/tools/send-notification.sh "BRANCH_NAME" "MESSAGE"` for smart notifications with acknowledgment (run with `help` for full documentation BRANCH_NAME|Title,MESSAGE|Description)
+> **⚠️ IMPORTANT**: Use `/Users/adammanuel/.claude/tools/ack-notifications.sh` to automatically acknowledge and cancel ALL active notifications (slash command)
+> **⚠️ IMPORTANT**: Use `/Users/adammanuel/.claude/tools/clickable-notification.sh "BRANCH_NAME" "MESSAGE"` for notifications that open current directory in Cursor IDE when clicked - perfect for Claude Code workflows!
+> **⚠️ IMPORTANT**: Use this command to get the users attention for when you need their input ```osascript -e 'display notification "📢 [BRANCH_NAME]" with title "ENTER_MESSAGE_FOR_USER_HERE" sound name "Submarine"'```
 
 
 # 1. Follow ESLint & Clean Code
@@ -109,6 +112,7 @@
 ## 8. Custom Slash Commands
 
 **Available Commands**:
+- `/ack-notifications` - Auto-acknowledge and cancel ALL active notification reminders
 - `/commit [context]` - Generate conventional commit messages from changes
 - `/fix-tests` - Run tests and fix all failures with progress logs  
 - `/fix-types` - Run TypeScript compiler and fix all type errors
