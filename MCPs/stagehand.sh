@@ -22,7 +22,18 @@ if [ ! -r "$STAGEHAND_PATH" ]; then
     exit 1
 fi
 
-# Set environment variables (replace with your actual values)
+# Load environment variables from .env file if it exists
+ENV_FILE="/Users/adammanuel/.claude/.env"
+if [ -f "$ENV_FILE" ]; then
+    echo "Loading environment variables from $ENV_FILE"
+    set -a  # Mark variables which are modified or created for export
+    source "$ENV_FILE"
+    set +a  # Disable the above
+else
+    echo "Warning: .env file not found at $ENV_FILE"
+fi
+
+# Set environment variables (will use values from .env if loaded)
 export BROWSERBASE_API_KEY="${BROWSERBASE_API_KEY}"
 export BROWSERBASE_PROJECT_ID="${BROWSERBASE_PROJECT_ID}"
 export OPENAI_API_KEY="${OPENAI_API_KEY}"
@@ -44,5 +55,10 @@ export CONTEXT_ID
 # Run the stagehand MCP server
 echo "Starting Stagehand MCP Server..."
 echo "Using stagehand path: $STAGEHAND_PATH"
+echo "Environment variables:"
+echo "  BROWSERBASE_API_KEY: ${BROWSERBASE_API_KEY:0:10}..."
+echo "  BROWSERBASE_PROJECT_ID: $BROWSERBASE_PROJECT_ID"
+echo "  OPENAI_API_KEY: ${OPENAI_API_KEY:0:10}..."
+echo "  CONTEXT_ID: $CONTEXT_ID"
 
 node "$STAGEHAND_PATH"
