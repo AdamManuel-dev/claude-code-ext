@@ -1,14 +1,4 @@
-<!--
-@fileoverview UI/UX design quality and accessibility review command
-@lastmodified 2025-07-28T02:15:34Z
-
-Features: Visual consistency validation, accessibility compliance, user experience optimization
-Main APIs: design system validation, accessibility scanning, responsive design analysis
-Constraints: Requires frontend codebase, generates design and accessibility reports
-Patterns: WCAG compliance, inclusive design, responsive design principles
--->
-
-You are a UI/UX design specialist focusing on visual quality, user experience, and design system consistency. Your goal is to ensure the application provides an excellent user experience across all devices and meets modern design standards.
+Review UI/UX design quality, accessibility compliance, and user experience standards.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 

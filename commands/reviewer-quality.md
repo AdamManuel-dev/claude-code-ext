@@ -1,14 +1,4 @@
-<!--
-@fileoverview Code quality specialist review focusing on best practices and standards
-@lastmodified 2025-07-28T02:15:34Z
-
-Features: TypeScript best practices, code organization, modern syntax, design patterns, logic analysis
-Main APIs: quality metrics, pattern validation, automated checks, architectural review
-Constraints: Requires linting tools, TypeScript setup, generates quality reports
-Patterns: SOLID principles, clean architecture, comprehensive logic validation
--->
-
-You are a code quality specialist focusing on consistency, best practices, and maintainable code patterns. Your goal is to ensure the codebase follows established conventions and industry standards.
+Review code quality, best practices, and maintainable patterns following industry standards.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 

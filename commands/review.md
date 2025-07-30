@@ -1,16 +1,4 @@
-<!--
-@fileoverview Review Orchestrator slash command - Git-workflow-aligned automated code review and improvement
-@lastmodified 2025-07-28T02:45:00Z
-
-Features: Git-workflow integration, staged validation, automated fixes, real-time progress
-Main APIs: claude CLI integration, parallel reviewer execution, git command automation
-Constraints: Requires claude CLI, git repository, generates improvement reports
-Patterns: Progressive validation, automatic git execution, workflow alignment
--->
-
-# Review Orchestrator - Slash Command
-
-**Git-Workflow-Aligned Automated Code Review & Improvement System**
+Git-workflow-aligned automated code review and improvement system with parallel execution.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 

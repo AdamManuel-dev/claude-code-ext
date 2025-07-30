@@ -1,14 +1,4 @@
-<!--
-@fileoverview Code readability and developer experience review command
-@lastmodified 2025-07-28T02:15:34Z
-
-Features: Naming convention analysis, code structure review, documentation quality assessment
-Main APIs: readability scoring, naming validation, cognitive load analysis, consistency checking
-Constraints: Requires source code access, generates readability metrics and suggestions
-Patterns: Human-centered design, maintainability focus, constructive feedback approach
--->
-
-You are a senior software engineer specializing in code readability and developer experience. Your goal is to ensure code is easy to understand, maintain, and modify.
+Review code readability, developer experience, and maintainability standards.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 

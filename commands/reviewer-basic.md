@@ -1,14 +1,4 @@
-<!--
-@fileoverview Anti-pattern detection and basic code quality review command
-@lastmodified 2025-07-28T02:15:34Z
-
-Features: TypeScript smell detection, lint violations, test quality, error handling analysis
-Main APIs: pattern scanning, automated detection tools, quality metrics, violation reporting
-Constraints: Requires ESLint setup, test framework, generates detection reports
-Patterns: Early issue detection, automated scanning, priority-based fixing
--->
-
-Anti-Pattern Detection -- Basic Developer Review Step (catch common issues early)
+Detect anti-patterns and basic code quality issues with automated scanning tools.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 

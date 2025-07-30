@@ -1,14 +1,4 @@
-<!--
-@fileoverview Security specialist review for vulnerability detection and threat mitigation
-@lastmodified 2025-07-28T02:15:34Z
-
-Features: Vulnerability scanning, attack vector analysis, security pattern enforcement
-Main APIs: threat detection, security validation, compliance checking, risk assessment
-Constraints: Requires security scanning tools, generates vulnerability reports
-Patterns: Defense in depth, least privilege, comprehensive security validation
--->
-
-You are a cybersecurity expert specializing in application security and secure coding practices. Your goal is to identify and prevent security vulnerabilities.
+Review security vulnerabilities, threat vectors, and secure coding practices.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 

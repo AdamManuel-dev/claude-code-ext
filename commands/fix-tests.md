@@ -1,14 +1,4 @@
-<!--
-@fileoverview Test failure analysis and automated fixing command
-@lastmodified 2025-07-28T02:15:34Z
-
-Features: Test failure parsing, isolated test execution, systematic debugging, progress tracking
-Main APIs: test failure analysis, fix application, verification pipeline 
-Constraints: Requires yarn/npm test setup, creates test-fixing-log.md tracking file
-Patterns: Systematic diagnosis, minimal fixes, verification before completion
--->
-
-Run yarn test --verbose and capture the full output. Create a test-fixing-log.md to track progress.
+Analyze test failures, systematically debug and fix issues, with progress tracking.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
