@@ -111,20 +111,46 @@
 
 ## 8. Custom Slash Commands
 
-**Available Commands**:
-- `/ack-notifications` - Auto-acknowledge and cancel ALL active notification reminders
+**Core Development Commands**:
 - `/commit [context]` - Generate conventional commit messages from changes
-- `/fix-tests` - Run tests and fix all failures with progress logs  
-- `/fix-types` - Run TypeScript compiler and fix all type errors
+- `/stash [description]` - Smart stash with context preservation and recovery mode
+- `/work-on-todos` - Execute TODO items systematically with tracking
+- `/vibe-code-workflow` - Complete development workflow with enforced quality gates
+
+**Quality & Testing Commands**:
+- `/fix-tests` - Analyze test failures and fix issues with progress tracking
+- `/fix-types` - Analyze and fix TypeScript compilation errors
+- `/fix-lint` - Analyze and fix ESLint errors across the project
+- `/review` - Git-aligned automated code review and improvement system
+- `/review-orchestrator` - Run comprehensive code review cycle on codebase
+
+**Documentation & Planning**:
 - `/generate-docs [path]` - Generate comprehensive JSDoc and markdown docs
 - `/generate-todo-from-prd {prd} {output}` - Convert PRD to prioritized TODO list
 - `/header-optimization` - Add file header documentation to all source files
-- `/stash [description]` - Smart stash with context preservation and recovery mode
-- `/work-on-todos` - Execute TODO items systematically with tracking
+
+**Specialized Reviewers**:
+- `/reviewer-basic` - Detect anti-patterns and basic code quality issues
+- `/reviewer-design` - Review UI/UX design quality and accessibility
+- `/reviewer-e2e` - End-to-end testing specialist for user journeys
+- `/reviewer-quality` - Review code quality and best practices
+- `/reviewer-readability` - Review code readability and maintainability
+- `/reviewer-security` - Review security vulnerabilities and threats
+- `/reviewer-testing` - Testing specialist for test effectiveness
+
+**Debugging & Cleanup**:
+- `/debug-web` - Add strategic debug logs to JS/TS code
+- `/cleanup-web` - Remove debug logs using `.debug-session.json`
+
+**Utilities**:
+- `/ack-notifications` - Auto-acknowledge and cancel ALL active notifications
 
 **Workflow Integration**:
-1. **Plan**: `/generate-todo-from-prd` → **Build**: `/work-on-todos` → **QA**: `/fix-tests` + `/fix-types` → **Ship**: `/commit`
-2. **Emergency**: `/fix-types` → `/fix-tests` → `/commit`
-3. **Resume**: `/stash` (no changes) enters recovery mode
+1. **Full Cycle**: `/vibe-code-workflow` (includes planning, dev, quality gates, and push)
+2. **Plan**: `/generate-todo-from-prd` → **Build**: `/work-on-todos` → **QA**: `/fix-tests` + `/fix-types` + `/fix-lint` → **Ship**: `/commit`
+3. **Emergency**: `/fix-types` → `/fix-tests` → `/fix-lint` → `/commit`
+4. **Debug Session**: `/debug-web` → investigate → `/cleanup-web`
+5. **Code Review**: `/review` or `/review-orchestrator` for comprehensive analysis
+6. **Resume Work**: `/stash` (no changes) enters recovery mode
 
 **Key Features**: All commands create tracking logs, work together intelligently, and follow existing code patterns.
