@@ -1,322 +1,469 @@
-# Review Orchestrator - Automated Code Improvement System
+# Claude Code Commands Documentation
 
-A comprehensive code review and improvement system that runs multiple specialized AI reviewers in parallel, automatically applies fixes, and provides detailed reports.
+> Comprehensive command system for advanced development automation and code quality management
 
-**💡 Two Ways to Use:**
-- **Instant**: Use `/review` slash command directly in Claude/Cursor (no setup required)
-- **Global**: Install as system-wide command with `./install-review-orchestrator.sh`
+by: [Adam Manuel](https://github.com/AdamManuel-dev)
 
-## 🚀 Quick Start
+## 📚 Table of Contents
 
-### Option 1: Slash Command (Instant)
-```
-/review add                           # Basic validation before git add
-/review commit                        # Quality check before git commit  
-/review push                          # Full validation before git push
-/review merge                         # Complete review before merge to main
-```
+- [Overview](#overview)
+- [Command Categories](#command-categories)
+- [Command Reference](#command-reference)
+- [Command Dependencies](#command-dependencies)
+- [Quick Start Guide](#quick-start-guide)
+- [Workflow Examples](#workflow-examples)
+- [Architecture](#architecture)
 
-### Option 2: Installation (Global Command)
+## Overview
+
+The Claude Code Commands system provides a sophisticated suite of development automation tools designed to enhance code quality, streamline workflows, and maintain high engineering standards. The system consists of 24 specialized commands organized into logical categories, with intelligent orchestration and dependency management.
+
+### Key Features
+
+- **Automated Quality Gates**: Systematic detection and resolution of code issues
+- **Intelligent Code Review**: Multi-dimensional analysis with specialized reviewers
+- **Workflow Automation**: Complete development lifecycle management
+- **Documentation Generation**: Comprehensive inline and external documentation
+- **Git Integration**: Smart commit, stash, and branch management
+- **Session Management**: State preservation and workflow recovery
+
+## Command Categories
+
+### 🔧 Quality Commands
+Automated detection and resolution of code quality issues
+
+| Command | Purpose | Auto-Fix |
+|---------|---------|----------|
+| `/fix-tests` | Resolve failing tests systematically | ✅ |
+| `/fix-lint` | Fix ESLint errors and warnings | ✅ |
+| `/fix-types` | Resolve TypeScript type errors | ✅ |
+| `/reviewer-basic` | Detect anti-patterns and common mistakes | ❌ |
+| `/reviewer-quality` | Assess code quality and architecture | ❌ |
+| `/reviewer-readability` | Evaluate code clarity and maintainability | ❌ |
+| `/reviewer-security` | Identify security vulnerabilities | ❌ |
+
+### 🔍 Review & Analysis Commands
+Comprehensive code review and analysis systems
+
+| Command | Purpose | Scope |
+|---------|---------|-------|
+| `/review` | Ultimate multi-dimensional review system | Full |
+| `/review-orchestrator` | Coordinate multiple specialized reviewers | Full |
+| `/ofri-pr-review` | Architecture-focused pull request review | PR |
+| `/reviewer-design` | UI/UX and accessibility review | Frontend |
+| `/reviewer-e2e` | End-to-end testing validation | Integration |
+| `/reviewer-testing` | Test effectiveness and coverage analysis | Tests |
+
+### 📝 Documentation Commands
+Documentation generation and management
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/generate-docs` | Generate comprehensive JSDoc and markdown | Files |
+| `/header-optimization` | Add/update file header documentation | Headers |
+
+### 🔄 Git Workflow Commands
+Git operations and version control management
+
+| Command | Purpose | Integration |
+|---------|---------|-------------|
+| `/git-commit` | Generate intelligent conventional commits | Quality Gates |
+| `/git-stash` | Advanced stash with context preservation | Session Management |
+
+### 🚀 Development Workflow Commands
+Complete development lifecycle management
+
+| Command | Purpose | Features |
+|---------|---------|----------|
+| `/vibe-code-workflow` | Complete development methodology | Auto-fix, Commit, Push |
+| `/work-on-todos` | Systematic TODO implementation | Quality Gates |
+| `/generate-todo-from-prd` | Convert PRD to actionable tasks | Task Generation |
+| `/debug-web` | Strategic debug log insertion | Session Tracking |
+| `/cleanup-web` | Remove debug artifacts | Paired with debug-web |
+
+## Command Reference
+
+### Core Commands
+
+#### `/review [mode] [depth] [target]`
+Ultimate review system combining all review methodologies
+
+**Modes:**
+- `quick` - Basic validation only (5 minutes)
+- `standard` - Core quality review (15 minutes) [default]
+- `comprehensive` - Full validation (30 minutes)
+- `strategic` - Complete analysis with holistic review (60 minutes)
+
+**Depth:**
+- `surface` - Quick scan for obvious issues
+- `normal` - Standard depth analysis [default]
+- `deep` - Thorough investigation with root cause analysis
+
+**Example:**
 ```bash
-# Clone or navigate to the Review Orchestrator directory
-./install-review-orchestrator.sh
+/review comprehensive deep ./src
 ```
 
-### Usage After Installation
+#### `/vibe-code-workflow`
+Complete development workflow with quality gates
+
+**Features:**
+- Automated type error resolution
+- Test failure fixing
+- Lint error correction
+- Intelligent commit generation
+- Remote push with validation
+
+**Example:**
 ```bash
-# Git workflow integration:
-review add                             # Before git add (basic validation)
-review commit                          # Before git commit (quality check)
-review push                            # Before git push (full validation)
-review merge                           # Before merge to main (complete review)
-
-# Short aliases:
-ro add                                 # Quick basic validation
-review commit                          # Quality check shortcut
+/vibe-code-workflow
+# Runs: fix-types → fix-tests → fix-lint → commit → push
 ```
 
-## 🔍 What It Does
+#### `/work-on-todos`
+Systematic implementation of TODO comments
 
-The Review Orchestrator runs **7 specialized reviewers** in parallel:
+**Process:**
+1. Scan codebase for TODO/FIXME comments
+2. Categorize by priority and complexity
+3. Implement fixes systematically
+4. Run quality gates after each fix
+5. Generate implementation report
 
-| Reviewer | Focus | What It Fixes |
-|----------|-------|---------------|
-| 🔵 **Quality** | Code patterns, TypeScript, logic | Missing types, logical errors, modern syntax |
-| 🔴 **Security** | Vulnerabilities, auth, data protection | Hardcoded secrets, input validation, dependencies |
-| 🟢 **Readability** | Naming, structure, documentation | Function names, code organization, comments |
-| 🟣 **Design** | UI/UX, accessibility, visual consistency | Missing alt text, color contrast, responsive issues |
-| 🟡 **Basic** | Anti-patterns, common mistakes | Console.logs, unused imports, magic numbers |
-| 🧪 **Testing** | Test effectiveness, coverage, mocking | Over-mocking, missing tests, poor coverage |
-| 🔵 **E2E** | Integration testing, user flows | API validation, user workflows, system integration |
+**Example:**
+```bash
+/work-on-todos
+# Processes all TODOs with automatic quality validation
+```
 
-## ✨ Key Features
+### Quality Assurance Commands
 
-### 🔄 Complete Improvement Cycle
-Each reviewer follows this workflow:
-1. **Review** - Analyze code using specialized criteria
-2. **Fix** - Automatically apply improvements using file editing tools  
-3. **Validate** - Re-check that fixes work and don't break anything
-4. **Report** - Document what was fixed and what needs attention
+#### `/fix-types`
+Resolve TypeScript errors systematically
 
-### ⚡ Git-Workflow Aligned Stages
-- **`add`**: Stage 1 only - Basic validation before staging files
-- **`commit`**: Stages 1-2 - Quality check before committing
-- **`push`**: Stages 1-3 - Full validation before pushing
-- **`merge`**: All stages - Complete review before merging to main
-- Automatically runs appropriate git command if all stages pass
+**Features:**
+- Intelligent type inference
+- Generic type resolution
+- Interface generation
+- Type assertion optimization
+
+#### `/fix-tests`
+Fix failing tests with root cause analysis
+
+**Features:**
+- Test failure categorization
+- Mock generation/update
+- Assertion correction
+- Test isolation fixes
+
+#### `/fix-lint`
+Resolve ESLint errors and warnings
+
+**Features:**
+- Auto-fixable issue resolution
+- Code style normalization
+- Import optimization
+- Dead code removal
+
+### Review Specialist Commands
+
+#### `/reviewer-security`
+Security vulnerability detection and remediation
+
+**Checks:**
+- Authentication flaws
+- Authorization issues
+- Input validation gaps
+- Sensitive data exposure
+- Dependency vulnerabilities
+
+#### `/reviewer-quality`
+Code quality and architecture assessment
+
+**Analysis:**
+- Design patterns
+- SOLID principles
+- Code complexity
+- Coupling and cohesion
+- Technical debt
+
+#### `/reviewer-testing`
+Test effectiveness evaluation
+
+**Metrics:**
+- Coverage analysis
+- Test quality assessment
+- Mock appropriateness
+- Edge case detection
+- Integration test gaps
+
+## Command Dependencies
+
+### Dependency Graph
 
 ```mermaid
 graph TD
-    A["🎯 Review Orchestrator Start"] --> B{Git Command?}
+    VW[vibe-code-workflow] --> FT[fix-types]
+    VW --> FTS[fix-tests]
+    VW --> FL[fix-lint]
+    VW --> GC[git-commit]
     
-    B -->|add| C1["🟡 Stage 1: Basic Review"]
-    C1 --> D1{Pass?}
-    D1 -->|Yes| E1["✅ git add ."]
-    D1 -->|No| F1["❌ Fix Issues First"]
+    RO[review-orchestrator] --> RB[reviewer-basic]
+    RO --> RS[reviewer-security]
+    RO --> RQ[reviewer-quality]
+    RO --> RR[reviewer-readability]
+    RO --> RD[reviewer-design]
+    RO --> RE[reviewer-e2e]
+    RO --> RT[reviewer-testing]
     
-    B -->|commit| C2["🟡 Stage 1: Basic Review"]
-    C2 --> G2["🟢🔵🔴 Stage 2: Core Quality<br/>(3 Parallel)"]
-    G2 --> D2{Pass?}
-    D2 -->|Yes| E2["✅ git commit -m 'message'"]
-    D2 -->|No| F2["❌ Fix Issues First"]
+    REV[review] --> RO
     
-    B -->|push| C3["🟡🟢🔵🔴 Stages 1-2"]
-    C3 --> G3["🟣🧪 Stage 3: Design & Testing<br/>(2 Parallel)"]
-    G3 --> D3{Pass?}
-    D3 -->|Yes| E3["✅ git push origin branch"]
-    D3 -->|No| F3["❌ Fix Issues First"]
+    WT[work-on-todos] --> FT
+    WT --> FTS
+    WT --> FL
     
-    B -->|merge| C4["🟡🟢🔵🔴🟣🧪 Stages 1-3"]
-    C4 --> G4["🔵📝🔍 Stage 4: E2E & Merge Readiness<br/>(2 Parallel)"]
-    G4 --> D4{Ready?}
-    D4 -->|Yes| E4["🔔 Ready for Merge<br/>(Manual Approval)"]
-    D4 -->|No| F4["❌ Not Ready for Main"]
+    CW[cleanup-web] -.paired.-> DW[debug-web]
+    
+    GD[generate-docs] --> HO[header-optimization]
 ```
 
-### 🛡️ Smart Automation
-- Only applies safe, functional fixes
-- Conservative approach for complex changes
-- Validates every fix before reporting
-- Detailed before/after comparisons
+### Command Relationships
 
-### 📺 Real-Time Unified Dashboard
-- **Consolidated View**: All reviewer outputs merged in real-time
-- **Live Progress**: See status of all reviewers simultaneously
-- **Cross-Reviewer Insights**: Issues found by multiple reviewers highlighted
-- **Priority-Based Display**: Critical issues shown first across all domains
+#### Orchestration Commands
+- **`/vibe-code-workflow`**: Orchestrates quality commands and git operations
+- **`/review-orchestrator`**: Coordinates multiple specialized reviewers
+- **`/review`**: Meta-orchestrator for all review methodologies
 
-```mermaid
-graph TB
-    subgraph "🎯 Unified Dashboard"
-        A["📊 Live Progress<br/>Stage 2/3 (66%)"]
-        B["🔄 Reviewer Status Matrix<br/>✅ ⏳ ⏸️ States"]
-        C["🔴 Critical Issues<br/>Cross-Reviewer Priority"]
-        D["📈 Real-Time Metrics<br/>Files, Coverage, Fixes"]
-    end
-    
-    subgraph "Stage 1"
-        E1["🟡 Basic Review"] --> A
-        E1 --> B
-        E1 --> C
-        E1 --> D
-    end
-    
-    subgraph "Stage 2 (Parallel)"
-        F1["🟢 Readability"] --> A
-        F2["🔵 Quality"] --> A  
-        F3["🔴 Security"] --> A
-        F1 --> B
-        F2 --> B
-        F3 --> B
-        F1 --> C
-        F2 --> C
-        F3 --> C
-        F1 --> D
-        F2 --> D
-        F3 --> D
-    end
-    
-    subgraph "Stage 3 (Parallel)"
-        G1["🟣 Design"] --> A
-        G2["🧪 Testing"] --> A
-        G3["🔵 E2E"] --> A
-        G1 --> B
-        G2 --> B
-        G3 --> B
-        G1 --> C
-        G2 --> C
-        G3 --> C
-        G1 --> D
-        G2 --> D
-        G3 --> D
-    end
+#### Paired Commands
+- **`/debug-web`** ↔ **`/cleanup-web`**: Debug insertion and removal
+- **`/git-commit`** → **`/git-stash`**: Commit with stash recovery
+
+#### Quality Chain
+```
+/work-on-todos → /fix-types → /fix-tests → /fix-lint → /git-commit
 ```
 
-### 📊 Comprehensive Reporting
-- Individual reports per reviewer
-- Aggregated master report
-- Metrics on files changed and issues resolved
-- Prioritized remaining issues
+## Quick Start Guide
 
-## 💻 Installation Details
-
-The installer sets up:
-- Global `review` command
-- Shell aliases: `ro`, `review` 
-- Helper functions: `review-current`, `review-git-changed`
-- Claude CLI integration (if available)
-- PATH configuration in `.zshrc`/`.bashrc`
-
-### Manual Installation
+### 1. Initial Setup
 ```bash
-# Make executable
-chmod +x install-review-orchestrator.sh
+# Run comprehensive review to understand codebase state
+/review comprehensive
 
-# Run installer
-./install-review-orchestrator.sh
-
-# Reload shell or restart terminal
-source ~/.zshrc  # or ~/.bashrc
+# Generate documentation for existing code
+/generate-docs ./src
 ```
 
-## 📖 Example Output
-
+### 2. Development Workflow
 ```bash
-$ review src/
+# Start development session
+/vibe-code-workflow
 
-╔═══════════════════════════════════════════════════════════════╗
-║                    Review Orchestrator                       ║
-║              Automated Code Improvement System               ║
-╚═══════════════════════════════════════════════════════════════╝
+# Work on existing TODOs
+/work-on-todos
 
-$ review push
-
-[14:30:15] [ORCHESTRATOR] Push workflow: Running stages 1-3...
-[14:30:30] [basic] Stage 1: Applied 5 critical fixes...
-[14:30:45] [ORCHESTRATOR] Stage 1 passed - starting Stage 2 (3 parallel)...
-[14:31:15] [security] Stage 2: Fixed 2 vulnerabilities...
-[14:31:20] [quality] Stage 2: Fixed 4 TypeScript issues...
-[14:31:25] [readability] Stage 2: Improved 8 naming issues...
-[14:31:30] [ORCHESTRATOR] Stage 2 complete - starting Stage 3 (3 parallel)...
-[14:31:45] [design] Stage 3: Fixed 3 accessibility issues...
-[14:31:50] [testing] Stage 3: Improved coverage from 67% to 78%...
-
-✅ All stages (1-3) passed! Executing: git push origin feature-branch
-🚀 Code pushed successfully - ready for PR/merge
-
-Push Review Summary:
-───────────────────
-basic: Fixed 5 critical issues ✅
-quality: Fixed 4 TypeScript issues ✅
-readability: Fixed 8 naming issues ✅
-security: Fixed 2 vulnerabilities ✅
-design: Fixed 3 accessibility issues ✅
-testing: Coverage improved +11% ✅
-
-🎯 Branch ready for merge review!
+# Debug specific issue
+/debug-web
+# ... investigate ...
+/cleanup-web
 ```
 
-## 🛠️ Available Commands
-
-### Slash Commands (Instant Use)
-```
-/review add                       # Basic validation before git add
-/review commit                    # Quality check before git commit
-/review push                      # Full validation before git push
-/review merge                     # Complete review before merge to main
-```
-
-### Global Commands (After Installation)
+### 3. Code Review
 ```bash
-# Main commands
-review [directory]                 # Full review cycle
-ro [directory]                     # Short alias  
-review [directory]                 # Alternative alias
+# Before committing
+/review quick
 
-# Helper functions
-review-current                     # Review current directory
-review-git-changed                 # Review recently changed files
-review-specific quality src/       # Run specific reviewer (future feature)
+# For pull requests
+/ofri-pr-review
+
+# Deep analysis
+/review strategic deep
 ```
 
-## 📁 Generated Files
-
-```
-./review-results/
-├── quality_review_20240115_143022.md
-├── security_review_20240115_143022.md
-├── readability_review_20240115_143022.md
-├── design_review_20240115_143022.md
-├── basic_review_20240115_143022.md
-├── e2e_review_20240115_143022.md
-└── aggregated_review_20240115_143022.md  ← Master Report
-```
-
-## 🔧 Requirements
-
-- **Claude CLI**: `npm install -g @anthropic-ai/claude-cli`
-- **Shell**: bash/zsh with config file access
-- **Git**: For change detection features
-- **Node.js**: For Claude CLI functionality
-
-## 🗑️ Uninstallation
-
+### 4. Git Operations
 ```bash
-# Remove global command and configuration
-./uninstall-review-orchestrator.sh
+# Smart commit
+/git-commit
+
+# Stash with context
+/git-stash "Working on feature X"
 ```
 
-This removes:
-- Global command from `~/.local/bin/`
-- Shell configuration from `.zshrc`/`.bashrc`
-- Claude CLI integration
-- Creates backup of shell config
+## Workflow Examples
 
-## 🎯 Best Practices
-
-1. **Run on clean branch** - Commit changes before running
-2. **Review changes** - Always check `git diff` after running
-3. **Test after fixes** - Ensure automated fixes don't break functionality
-4. **Regular reviews** - Run weekly or before releases
-5. **Team sharing** - Share aggregated reports with team
-
-## 🚀 Integration
-
-### CI/CD Pipeline
-```yaml
-- name: Automated Code Review
-  run: |
-    ./install-review-orchestrator.sh
-    review src/
-    # Upload review-results/ as artifacts
-```
-
-### Git Hooks
+### Example 1: Complete Feature Development
 ```bash
-# pre-commit hook
-#!/bin/bash
-review-git-changed
-if [ $? -ne 0 ]; then
-  echo "Code review found issues. Please address them."
-  exit 1
-fi
+# 1. Generate TODOs from requirements
+/generate-todo-from-prd "Add user authentication"
+
+# 2. Implement TODOs systematically
+/work-on-todos
+
+# 3. Run complete workflow with quality gates
+/vibe-code-workflow
+
+# 4. Final review before PR
+/review comprehensive
 ```
 
-## 📚 Documentation
+### Example 2: Bug Investigation and Fix
+```bash
+# 1. Add debug logging
+/debug-web
 
-- [⚡ Quick Reference](QUICK_REFERENCE.md) - Side-by-side comparison of both methods
-- [📋 Complete Guide](commands/review-orchestrator.md) - Full implementation (slash command + global)
-- [Detailed Usage Guide](commands/review-orchestrator-usage.md) - Global installation
-- [Individual Reviewer Specs](commands/) - Specialized reviewer guidelines
-- [Installation Guide](install-review-orchestrator.sh) - Global command setup
+# 2. Identify issue
+# ... manual investigation ...
 
-## 🤝 Contributing
+# 3. Clean up debug artifacts
+/cleanup-web
 
-To add new reviewers:
-1. Create `commands/reviewer-newtype.md` following existing patterns
-2. Add to `REVIEWERS` array in `review-orchestrator.sh`
-3. Test with sample codebase
+# 4. Fix identified issues
+/fix-types
+/fix-tests
+
+# 5. Commit with context
+/git-commit "Fix authentication race condition"
+```
+
+### Example 3: Code Quality Improvement
+```bash
+# 1. Run security review
+/reviewer-security
+
+# 2. Fix critical issues
+# ... manual fixes ...
+
+# 3. Run quality review
+/reviewer-quality
+
+# 4. Apply automated fixes
+/fix-lint
+
+# 5. Validate improvements
+/review standard
+```
+
+## Architecture
+
+### System Design Principles
+
+1. **Modularity**: Each command is self-contained with clear responsibilities
+2. **Composability**: Commands can be combined for complex workflows
+3. **Idempotency**: Commands can be run multiple times safely
+4. **Progressive Enhancement**: Start simple, add complexity as needed
+5. **Fail-Safe**: Graceful degradation and error recovery
+
+### Command Structure
+
+All commands follow a consistent structure:
+
+```markdown
+# Command Name
+
+by: (Author)[GitHub URL]
+
+<instructions>
+  Primary objective and requirements
+</instructions>
+
+<context>
+  Operating environment and constraints
+</context>
+
+<methodology>
+  Execution strategy and phases
+</methodology>
+
+## Implementation Details
+```
+
+### Quality Gates
+
+Commands implement a multi-layered quality gate system:
+
+1. **Pre-validation**: Check preconditions
+2. **Execution**: Apply changes systematically
+3. **Post-validation**: Verify changes don't break functionality
+4. **Rollback**: Undo changes if validation fails
+5. **Reporting**: Generate comprehensive reports
+
+### Session Management
+
+Stateful commands support session management:
+
+- **Session Creation**: Initialize tracking state
+- **Progress Tracking**: Monitor execution progress
+- **Context Preservation**: Save work-in-progress
+- **Recovery**: Resume interrupted sessions
+- **Cleanup**: Archive completed sessions
+
+## Best Practices
+
+### Command Selection
+- Use orchestration commands for complete workflows
+- Use specialized commands for targeted improvements
+- Chain commands for complex operations
+- Always run quality gates before committing
+
+### Workflow Optimization
+- Start with `/review` to understand current state
+- Use `/work-on-todos` for systematic improvements
+- Apply `/vibe-code-workflow` for complete development cycles
+- Run specialized reviewers for deep analysis
+
+### Quality Maintenance
+- Run `/fix-types` after significant changes
+- Use `/fix-tests` to maintain test suite health
+- Apply `/fix-lint` for consistent code style
+- Execute `/review` before pull requests
+
+## Troubleshooting
+
+### Common Issues
+
+#### Commands Not Found
+- Ensure all command files are in `/commands` directory
+- Check file permissions
+- Verify Claude CLI installation
+
+#### Review Orchestrator Failures
+- Verify reviewer files exist
+- Check for missing dependencies
+- Review error logs for specific failures
+
+#### Quality Gate Failures
+- Run individual fix commands separately
+- Check for conflicting changes
+- Review test environment setup
+
+### Debug Mode
+
+Enable verbose logging for troubleshooting:
+```bash
+# Add debug flag to commands
+/review --debug comprehensive
+
+# Check command logs
+cat ~/.claude/logs/commands.log
+```
+
+## Contributing
+
+To add new commands:
+
+1. Create command file in `/commands` directory
+2. Follow standard command structure
+3. Document dependencies and relationships
+4. Add to appropriate category
+5. Update this README
+
+## Version History
+
+- **v2.0.0** - Consolidated review system with orchestration
+- **v1.5.0** - Added quality gate automation
+- **v1.0.0** - Initial command system release
 
 ---
 
-**Transform your codebase with automated, intelligent code improvement!** 🎯
+*Generated with Claude Code Documentation System*
+*Last Updated: 2025-08-22*
