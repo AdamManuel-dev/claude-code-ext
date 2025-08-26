@@ -218,7 +218,28 @@ Optimize Claude Code performance by:
 2. Batching related operations
 3. Limiting context to essentials
 4. Applying appropriate thinking budgets
+5. Prioritizing agent usage to keep context clean
+6. Parallelizing agents for concurrent execution
 </thinking>
+
+### Agent Usage Strategy
+
+<instructions>
+PRIORITIZE using specialized agents to keep context clean and maximize efficiency:
+1. **Always delegate to agents** when tasks match their specialization
+2. **Provide clear context** - Give agents specific instructions and relevant file paths
+3. **Parallelize execution** - Run up to 5 agent tasks concurrently when possible
+4. **Batch related work** - Group similar tasks for the same agent
+5. **Keep main context minimal** - Let agents handle the heavy lifting
+</instructions>
+
+<example>
+When fixing multiple issues:
+- Launch fix-types, fix-lint, and fix-tests agents in parallel
+- Provide each agent with specific file paths and error context
+- Monitor all agents simultaneously for completion
+- Aggregate results and proceed with next steps
+</example>
 
 ### Token Budget Guidelines
 ```
@@ -231,9 +252,10 @@ Security audit: 50,000-128,000 tokens
 
 ### Context Management
 <step n="1">Load only essential files for task</step>
-<step n="2">Use `/refresh` after external changes</step>
-<step n="3">Clear context with `/clear` between major tasks</step>
-<step n="4">Monitor usage with `/tokens`</step>
+<step n="2">Delegate file-heavy operations to agents</step>
+<step n="3">Use `/refresh` after external changes</step>
+<step n="4">Clear context with `/clear` between major tasks</step>
+<step n="5">Monitor usage with `/tokens`</step>
 
 ## 🏗️ Project Structure Patterns
 
