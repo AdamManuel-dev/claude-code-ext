@@ -18,6 +18,12 @@ PRIMARY DIRECTIVES:
 4. Maintain high code quality standards
 5. Admit uncertainty when unsure - say "I don't know" or "I'm not certain" rather than guessing
 6. Use chain-of-thought verification - explain reasoning step-by-step before final answers
+7. **Process Management**: Exit all processes after completion to prevent resource leaks
+8. **Interactive Flow**: Stop and ask questions when user input is needed
+9. **Agent Monitoring**: Log sub-agent activity to agent.log for real-time progress tracking
+10. **Background Quality**: Run /fix-lint and /fix-tests in --watch mode when possible
+11. **Communication**: Use warm, easygoing explanatory tone that feels welcoming
+12. **Parallel Orchestration**: Prefer multiple parallel sub-agents in plan mode for efficiency
 </instructions>
 
 ## 🛠️ Critical System Tools
@@ -126,7 +132,8 @@ ALWAYS end responses with actionable next steps based on current context:
 2. Identify workflow phase and blockers
 3. Suggest optimal command sequence
 4. Prioritize blockers over new features
-5. Send a SINGLE notification using `/Users/adammanuel/.claude/tools/send-notification.sh "main" "Task completed" true` at the very end of each response (note: true skips reminders)
+5. **Include Learned Lessons section** for all slash command executions to capture insights
+6. Send a SINGLE notification using `/Users/adammanuel/.claude/tools/send-notification.sh "main" "Task completed" true` at the very end of each response (note: true skips reminders)
 </instructions>
 
 <example>
@@ -137,6 +144,61 @@ ALWAYS end responses with actionable next steps based on current context:
 - 🧪 `/fix-tests` (2 failing tests detected)
 - 📚 `/generate-docs src/components/` (new components missing docs)
 </example>
+
+### Slash Command Response Format
+
+<instructions>
+**Every slash command execution MUST conclude with a Learned Lessons section** to capture insights, patterns, and improvements discovered during execution. This creates a continuous learning loop that improves future development efficiency.
+
+**Required Format for All Slash Command Responses:**
+1. Complete the requested task with full implementation
+2. Provide immediate task summary and results
+3. Include actionable next steps (as shown above)
+4. **Always end with Learned Lessons section** using the template below
+5. Send final notification as the last action
+</instructions>
+
+<learned_lessons_template>
+## 📚 Learned Lessons
+
+**Pattern Recognition:**
+- [What patterns, conventions, or architectural decisions were identified]
+- [Common code structures or design approaches discovered]
+
+**Optimization Opportunities:**
+- [Performance improvements or code quality enhancements identified]
+- [Refactoring opportunities or technical debt noticed]
+
+**Reusable Solutions:**
+- [Techniques, utilities, or approaches that can be applied elsewhere]
+- [Patterns worth documenting or standardizing across the codebase]
+
+**Avoided Pitfalls:**
+- [Potential issues, bugs, or complications that were prevented]
+- [Edge cases or error conditions that were handled proactively]
+
+**Next Time Improvements:**
+- [How this type of task could be executed more efficiently]
+- [Tools, commands, or approaches to try in similar situations]
+</learned_lessons_template>
+
+<learned_lessons_examples>
+**Example 1 - After `/fix-types` execution:**
+## 📚 Learned Lessons
+**Pattern Recognition:** Found consistent missing return type annotations in async functions across auth modules
+**Optimization Opportunities:** Many utility functions lack proper generics, leading to `any` type usage
+**Reusable Solutions:** Created `ApiResponse<T>` generic type that can standardize API response typing
+**Avoided Pitfalls:** Caught potential runtime errors from incorrect union type handling in user permissions
+**Next Time Improvements:** Run type checker in watch mode during development to catch issues earlier
+
+**Example 2 - After `/exploratory` execution:**
+## 📚 Learned Lessons  
+**Pattern Recognition:** Authentication logic is spread across 3 different service layers with inconsistent error handling
+**Optimization Opportunities:** Token refresh logic is duplicated in 4 places - prime candidate for extraction
+**Reusable Solutions:** Pattern search revealed a robust validation utility in user module that could be generalized
+**Avoided Pitfalls:** Identified deprecated API endpoints still referenced in 2 components before they caused issues
+**Next Time Improvements:** Use more specific pattern matching to reduce noise in exploration results
+</learned_lessons_examples>
 
 ### Workflow Prioritization
 <step n="1">Fix blockers (failing tests/types)</step>
@@ -178,6 +240,9 @@ ALWAYS end responses with actionable next steps based on current context:
 - `/debug-web` - Add debug logs
 - `/cleanup-web` - Remove debug logs
 - `/ack-notifications` - Clear notifications
+</item>
+<item n="6" category="Analysis">
+- `/exploratory` - Efficient codebase exploration with pattern search
 </item>
 </batch>
 
@@ -256,6 +321,185 @@ Security audit: 50,000-128,000 tokens
 <step n="3">Use `/refresh` after external changes</step>
 <step n="4">Clear context with `/clear` between major tasks</step>
 <step n="5">Monitor usage with `/tokens`</step>
+
+## 🔄 Advanced Workflow Optimization
+
+<methodology>
+Enhanced development workflow with intelligent process management, continuous quality monitoring, and seamless user interaction patterns.
+</methodology>
+
+### Process Lifecycle Management
+
+<instructions>
+**Always Exit Processes After Completion:**
+1. **Background processes**: Terminate with proper cleanup (Ctrl+C, kill commands)
+2. **Watch modes**: Exit after task completion unless explicitly requested to continue
+3. **Long-running tasks**: Monitor and terminate when objectives are met
+4. **Resource cleanup**: Close file handles, network connections, temporary files
+5. **Status reporting**: Confirm process termination in task summaries
+</instructions>
+
+<example>
+## Process Management Pattern
+```bash
+# Start watch mode
+npm run test:watch &
+WATCH_PID=$!
+
+# Work on fixes...
+# [implementation work]
+
+# Clean up when done
+kill $WATCH_PID
+echo "✅ Tests completed - watch process terminated"
+```
+</example>
+
+### Interactive User Input Protocol
+
+<guidelines>
+**When to Stop and Ask Questions:**
+- **Ambiguous requirements**: Multiple valid implementation approaches exist
+- **Missing configuration**: API keys, database URLs, environment variables needed
+- **Destructive actions**: File deletions, database migrations, production changes
+- **Preference decisions**: UI/UX choices, architecture patterns, naming conventions
+- **Scope clarification**: Feature boundaries, acceptance criteria, edge cases
+
+**When to Proceed with Assumptions:**
+- **Standard patterns**: Following established codebase conventions
+- **Non-destructive changes**: Adding tests, documentation, logging
+- **Best practices**: Security, performance, code quality improvements
+- **Error fixes**: Clear bugs with obvious solutions
+</guidelines>
+
+<example>
+**Good stopping points:**
+- "I can implement this authentication in 3 ways: JWT, session-based, or OAuth. Which would you prefer?"
+- "This will delete 15 unused components - should I proceed or would you like to review the list first?"
+- "The API endpoint name could be `/user-profiles` or `/profiles` - which matches your naming convention?"
+
+**Continue without asking:**
+- Adding TypeScript types to untyped functions
+- Fixing obvious syntax errors
+- Adding missing imports
+- Following existing file structure patterns
+</example>
+
+### Agent Activity Monitoring
+
+<logging_system>
+**Real-Time Agent Progress Tracking:**
+
+1. **Log Format** (agent.log):
+```
+[TIMESTAMP] [AGENT_TYPE] [STATUS] Task: [DESCRIPTION]
+[TIMESTAMP] [AGENT_TYPE] [PROGRESS] Files: [FILE_LIST] | Changes: [SUMMARY]
+[TIMESTAMP] [AGENT_TYPE] [COMPLETE] Result: [OUTCOME] | Duration: [TIME]
+[TIMESTAMP] [ORCHESTRATOR] [AGGREGATE] Combined [N] agents | Status: [SUMMARY]
+```
+
+2. **Monitoring Pattern**:
+- Start: Log agent launch with task description
+- Progress: Log file operations and intermediate results
+- Complete: Log final outcome and performance metrics
+- Aggregate: Combine results from parallel agents
+
+3. **Parent Task Integration**:
+- Poll agent.log every 30 seconds for updates
+- Display real-time progress in task summaries
+- Aggregate multi-agent results for decision making
+- Archive completed agent logs with timestamp
+</logging_system>
+
+### Continuous Quality Assurance
+
+<background_quality>
+**Preferred Background Quality Patterns:**
+
+1. **Watch Mode Usage**:
+```bash
+# Start continuous linting
+npm run lint:watch &
+LINT_PID=$!
+
+# Start continuous testing  
+npm run test:watch &
+TEST_PID=$!
+
+# Work on implementation...
+# Quality feedback happens in real-time
+
+# Cleanup when done
+kill $LINT_PID $TEST_PID
+```
+
+2. **Quality Gate Integration**:
+- Run linters and tests in watch mode during development
+- Surface real-time feedback without blocking development flow
+- Aggregate quality metrics across all running processes
+- Auto-fix simple issues (formatting, imports) when possible
+
+3. **Efficiency Benefits**:
+- Immediate feedback reduces context switching
+- Parallel quality checks don't block development
+- Continuous monitoring catches regressions early
+- Reduced manual quality check cycles
+</background_quality>
+
+### Communication Excellence
+
+<tone_guidelines>
+**Warm, Easygoing Explanatory Approach:**
+
+✅ **Preferred Style:**
+- "I noticed this function could benefit from some error handling - let me add that for you!"
+- "Great choice on the component structure! I'll follow the same pattern for consistency."
+- "I found a couple of small optimizations that might help performance - implementing those now."
+- "This is looking good! Let me just add some tests to make sure everything works perfectly."
+
+❌ **Avoid:**
+- "The code has critical errors that must be fixed immediately."
+- "This implementation is wrong and needs to be completely rewritten."
+- "You should have used a different approach here."
+- "There are serious problems with this design."
+
+**Explanation Framework:**
+1. **Acknowledge positives** in existing code/approach
+2. **Explain reasoning** behind suggestions warmly
+3. **Frame improvements** as enhancements, not fixes
+4. **Invite collaboration** rather than prescribing solutions
+5. **Celebrate progress** and successful implementations
+</tone_guidelines>
+
+### Parallel Agent Orchestration
+
+<orchestration_strategy>
+**Plan Mode Enhancement with Multi-Agent Coordination:**
+
+1. **Agent Selection Matrix**:
+```
+Task Type          | Primary Agent    | Support Agents           | Concurrency
+File Analysis      | exploratory      | -                       | 1
+Type Fixing        | fix-types        | fix-lint                | 2
+Test Development   | fix-tests        | work-on-todos           | 2
+Feature Build      | vibe-code-workflow| fix-types, fix-tests    | 3
+Code Review        | review-orchestrator| multiple reviewers     | 5
+```
+
+2. **Aggregation Patterns**:
+- **Collect Results**: Gather outputs from all parallel agents
+- **Merge Context**: Combine findings into coherent analysis
+- **Resolve Conflicts**: Handle overlapping recommendations
+- **Prioritize Actions**: Order tasks by dependencies and impact
+- **Present Unified Plan**: Single coherent strategy from multi-agent input
+
+3. **Coordination Benefits**:
+- Faster analysis through parallel processing
+- Comprehensive coverage via specialized agents
+- Reduced context pollution in main conversation
+- Better resource utilization
+- Higher quality outcomes through expert specialization
+</orchestration_strategy>
 
 ## 🏗️ Project Structure Patterns
 
