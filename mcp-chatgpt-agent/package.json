@@ -1,0 +1,23 @@
+{
+  "name": "mcp-chatgpt-agent",
+  "version": "1.0.0",
+  "description": "MCP server that invokes ChatGPT as a sub-agent using codex command",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch & node --watch dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "child_process": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": ["mcp", "chatgpt", "agent", "codex"],
+  "author": "",
+  "license": "MIT"
+}

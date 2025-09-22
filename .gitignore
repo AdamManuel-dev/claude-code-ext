@@ -13,6 +13,10 @@
 !MCPs/mcp-server-browserbase/**
 !MCPs/mcp-server-simulator-ios-idb/
 !MCPs/mcp-server-simulator-ios-idb/**
+!MCPs/context7.sh
+!mcp-chatgpt-agent
+!MCPs/test-discover.zsh
+!MCPs/test-stagehand.js
 !MCPs/how-to-install.md
 !MCPs/README.md
 !tools/README.md
