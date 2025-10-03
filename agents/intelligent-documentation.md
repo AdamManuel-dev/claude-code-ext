@@ -2,9 +2,11 @@
 name: intelligent-documentation
 description: "Master documentation specialist that intelligently selects between Diátaxis framework (tutorials, how-to, reference, explanation) and comprehensive JSDoc/markdown generation strategies based on context, scope, and user needs. PROACTIVELY use this agent when documentation is needed, gaps are identified, or after completing significant development work."
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite, Task, WebFetch
-model: claude-opus-4-1-20250805
+model: claude-sonnet-4-20250514
 lastmodified: 2025-08-28T21:13:17-05:00
 ---
+
+thinkhard
 
 # Intelligent Documentation Agent
 

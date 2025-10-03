@@ -2,8 +2,7 @@
 name: code-reviewer
 description: "Elite code review specialist that combines security analysis, performance optimization, maintainability assessment, and best practices enforcement. PROACTIVELY use this agent after completing significant code changes or when preparing for production deployment."
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite, Task, WebFetch
-model: claude-opus-4-1-20250805
-lastmodified: 2025-08-28T21:13:17-05:00
+model: claude-sonnet-4-20250514
 ---
 
 # Code Review Agent

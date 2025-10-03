@@ -2,7 +2,7 @@
 name: vibe-code-workflow
 description: "Vibe Code Workflow Orchestrator - Executes comprehensive development workflow with quality gates. PROACTIVELY use this agent when starting new features or major development work."
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite, Task
-model: claude-opus-4-1-20250805
+model: claude-sonnet-4-20250514
 ---
 
 # Vibe Code Workflow Orchestrator

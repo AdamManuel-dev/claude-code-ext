@@ -2,9 +2,11 @@
 name: strategic-planning
 description: "Master planning specialist that combines brainstorming, proposal creation, PRD development, and feature planning into a comprehensive project strategy workflow. PROACTIVELY use this agent when starting new features, complex projects, or when transitioning from ideas to implementation."
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite, Task, WebFetch
-model: claude-opus-4-1-20250805
+model: claude-sonnet-4-20250514
 lastmodified: 2025-08-28T21:13:17-05:00
 ---
+
+ultrathink
 
 # Strategic Planning Agent
 

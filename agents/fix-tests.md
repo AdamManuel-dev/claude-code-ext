@@ -2,7 +2,7 @@
 name: fix-tests
 description: "Test failure resolution specialist. PROACTIVELY fixes failing tests when detected, ensuring 100% test pass rate."
 tools: Read, Edit, MultiEdit, Bash, Grep, Glob, LS
-model: claude-opus-4-1-20250805
+model: claude-sonnet-4-20250514
 ---
 
 # Test Failure Resolution Specialist

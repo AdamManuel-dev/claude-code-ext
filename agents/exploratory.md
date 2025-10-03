@@ -2,7 +2,10 @@
 name: exploratory
 description: "Codebase exploration specialist. Efficiently searches through codebases using pattern matching to gather comprehensive file summaries and contextual information for specific topics."
 tools: Bash, Grep, Glob, LS, Read
+model: claude-sonnet-4-20250514
 ---
+
+think
 
 # Codebase Exploration Specialist
 
