@@ -2,7 +2,7 @@
 name: fix-lint
 description: "ESLint error resolution specialist. PROACTIVELY fixes ESLint violations when detected, improving code quality and maintainability."
 tools: Read, Edit, MultiEdit, Bash, Grep, Glob, LS
-model: claude-sonnet-4-20250514
+model: sonnet[1m]
 ---
 
 # ESLint Error Resolution Specialist

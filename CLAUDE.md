@@ -21,9 +21,10 @@ PRIMARY DIRECTIVES:
 7. **Process Management**: Exit all processes after completion to prevent resource leaks
 8. **Interactive Flow**: Stop and ask questions when user input is needed
 9. **Agent Monitoring**: Log sub-agent activity to agent.log for real-time progress tracking
-10. **Background Quality**: Run /fix-lint and /fix-tests in --watch mode when possible
-11. **Communication**: Use warm, easygoing explanatory tone that feels welcoming
-12. **Parallel Orchestration**: Prefer multiple parallel sub-agents in plan mode for efficiency
+10. **Background Quality**: Run `/fix:lint` and `/fix:tests` in --watch mode when possible
+11. **Targeted Quality Checks**: When running tests or lint, scope execution to affected files; if the affected set is unknown, run the full suite once to discover it, then rerun only the identified files individually
+12. **Communication**: Use warm, easygoing explanatory tone that feels welcoming
+13. **Parallel Orchestration**: Prefer multiple parallel sub-agents in plan mode for efficiency
 </instructions>
 
 ## 🛠️ Critical System Tools
@@ -138,11 +139,11 @@ ALWAYS end responses with actionable next steps based on current context:
 
 <example>
 ## 💡 Suggested Next Steps
-- 🔧 `/fix-types` (3 TypeScript errors in auth module)
-- ✅ `/work-on-todos` (2 HIGH priority items ready)
-- 📝 `/commit` (5 modified files need committing)
-- 🧪 `/fix-tests` (2 failing tests detected)
-- 📚 `/generate-docs src/components/` (new components missing docs)
+- 🔧 `/fix:types` (3 TypeScript errors in auth module)
+- ✅ `/todo:work-on` (2 HIGH priority items ready)
+- 📝 `/git:commit` (5 modified files need committing)
+- 🧪 `/fix:tests` (2 failing tests detected)
+- 📚 `/docs:general src/components/` (new components missing docs)
 </example>
 
 ### Slash Command Response Format
@@ -183,7 +184,7 @@ ALWAYS end responses with actionable next steps based on current context:
 </learned_lessons_template>
 
 <learned_lessons_examples>
-**Example 1 - After `/fix-types` execution:**
+**Example 1 - After `/fix:types` execution:**
 ## 📚 Learned Lessons
 **Pattern Recognition:** Found consistent missing return type annotations in async functions across auth modules
 **Optimization Opportunities:** Many utility functions lack proper generics, leading to `any` type usage
@@ -191,13 +192,13 @@ ALWAYS end responses with actionable next steps based on current context:
 **Avoided Pitfalls:** Caught potential runtime errors from incorrect union type handling in user permissions
 **Next Time Improvements:** Run type checker in watch mode during development to catch issues earlier
 
-**Example 2 - After `/exploratory` execution:**
-## 📚 Learned Lessons  
+**Example 2 - After using Explore agent for codebase analysis:**
+## 📚 Learned Lessons
 **Pattern Recognition:** Authentication logic is spread across 3 different service layers with inconsistent error handling
 **Optimization Opportunities:** Token refresh logic is duplicated in 4 places - prime candidate for extraction
 **Reusable Solutions:** Pattern search revealed a robust validation utility in user module that could be generalized
 **Avoided Pitfalls:** Identified deprecated API endpoints still referenced in 2 components before they caused issues
-**Next Time Improvements:** Use more specific pattern matching to reduce noise in exploration results
+**Next Time Improvements:** Use more specific pattern matching in agent instructions to reduce noise in exploration results
 </learned_lessons_examples>
 
 ### Workflow Prioritization
@@ -209,70 +210,84 @@ ALWAYS end responses with actionable next steps based on current context:
 ## 🎯 Custom Commands Reference
 
 <batch>
-<item n="1" category="Development">
-- `/commit [context]` - Conventional commits
-- `/stash [description]` - Smart stash management
-- `/work-on-todos` - Execute TODOs systematically
-- `/vibe-code-workflow` - Full dev workflow
+<item n="1" category="Git & Workflow">
+- `/git:commit [context]` - Conventional commits (commands/git/commit.md)
+- `/git:stash [description]` - Smart stash management (commands/git/stash.md)
+- `/vibe-code-workflow` - Full development workflow (commands/vibe-code-workflow.md)
 </item>
-<item n="2" category="Quality">
-- `/fix-tests` - Fix failing tests
-- `/fix-types` - Fix TypeScript errors
-- `/fix-lint` - Fix ESLint issues
-- `/review` - Automated code review
-- `/review-orchestrator` - Comprehensive review
+<item n="2" category="Quality & Fixes">
+- `/fix:types` - Fix TypeScript errors (commands/fix/types.md)
+- `/fix:tests` - Fix failing tests (commands/fix/tests.md)
+- `/fix:lint` - Fix ESLint issues (commands/fix/lint.md)
+- `/fix:all` - Run all fix agents in parallel (commands/fix/all.md)
+- `/review-orchestrator` - Comprehensive multi-reviewer analysis (commands/review-orchestrator.md)
 </item>
-<item n="3" category="Documentation">
-- `/generate-docs [path]` - Generate documentation
-- `/generate-todo-from-prd` - PRD to TODO conversion
-- `/header-optimization` - Add file headers
+<item n="3" category="Development">
+- `/todo:work-on` - Execute TODOs systematically (commands/todo/work-on.md)
+- `/todo:from-prd` - Convert PRD to TODO items (commands/todo/from-prd.md)
+- `/header-optimization` - Add file header documentation (commands/header-optimization.md)
 </item>
-<item n="4" category="Specialized">
-- `/reviewer-basic` - Anti-pattern detection
-- `/reviewer-design` - UI/UX review
-- `/reviewer-e2e` - E2E test specialist
-- `/reviewer-quality` - Code quality review
-- `/reviewer-readability` - Readability review
-- `/reviewer-security` - Security audit
-- `/reviewer-testing` - Test effectiveness
+<item n="4" category="Planning">
+- `/planning:brainstorm` - Feature brainstorming (commands/planning/1-brainstorm.md)
+- `/planning:proposal` - Feature proposal creation (commands/planning/2-feature-proposal.md)
+- `/planning:prd` - PRD development (commands/planning/3-feature-prd.md)
+- `/planning:feature` - Feature planning & strategy (commands/planning/4-feature-planning.md)
 </item>
-<item n="5" category="Debug">
-- `/debug-web` - Add debug logs
-- `/cleanup-web` - Remove debug logs
-- `/ack-notifications` - Clear notifications
+<item n="5" category="Code Review Specialists">
+- `/reviewer:basic` - Anti-pattern detection (commands/reviewer/basic.md)
+- `/reviewer:design` - UI/UX design review (commands/reviewer/design.md)
+- `/reviewer:e2e` - E2E test effectiveness (commands/reviewer/e2e.md)
+- `/reviewer:quality` - Code quality review (commands/reviewer/quality.md)
+- `/reviewer:readability` - Readability & maintainability (commands/reviewer/readability.md)
+- `/reviewer:security` - Security audit & vulnerabilities (commands/reviewer/security.md)
+- `/reviewer:testing` - Test coverage & strategy (commands/reviewer/testing.md)
+- `/reviewer:ofri` - OFRI PR review framework (commands/reviewer/ofri-pr-review.md)
 </item>
-<item n="6" category="Analysis">
-- `/exploratory` - Efficient codebase exploration with pattern search
+<item n="6" category="Documentation">
+- `/docs:diataxis` - Diataxis framework documentation (commands/docs/diataxis.md)
+- `/docs:general` - General documentation generation (commands/docs/general.md)
+</item>
+<item n="7" category="Debug & Tools">
+- `/debug-web:debug` - Add debug logs (commands/debug-web/debug-web.md)
+- `/debug-web:cleanup` - Remove debug logs (commands/debug-web/cleanup-web.md)
+- `/debug-mcp` - MCP debugging tool (commands/debug-mcp.sh)
 </item>
 </batch>
+
+**Note:** Use `/ack-notifications` tool (tools/ack-notifications.sh) to clear active notifications
 
 ## 🔄 Workflow Patterns
 
 <implementation_plan>
 ### Standard Development Flow
-1. **Planning**: `/generate-todo-from-prd` → Review and prioritize
-2. **Development**: `/work-on-todos` → Implement features
-3. **Quality**: `/fix-types` → `/fix-tests` → `/fix-lint`
-4. **Review**: `/review` → Address feedback
-5. **Ship**: `/commit` → Push to remote
+1. **Planning**: `/planning:feature` or `/todo:from-prd` → Review and prioritize
+2. **Development**: `/todo:work-on` → Implement features
+3. **Quality**: `/fix:types` → `/fix:tests` → `/fix:lint`
+4. **Review**: `/review-orchestrator` → Address feedback
+5. **Ship**: `/git:commit` → Push to remote
 
 ### Emergency Fix Flow
-1. `/fix-types` - Resolve type errors immediately
-2. `/fix-tests` - Ensure tests pass
-3. `/fix-lint` - Clean up code
-4. `/commit` - Document changes
+1. `/fix:types` - Resolve type errors immediately
+2. `/fix:tests` - Ensure tests pass
+3. `/fix:lint` - Clean up code
+4. `/git:commit` - Document changes
 
 ### Debug Session Flow
-1. `/debug-web` - Add strategic logs
+1. `/debug-web:debug` - Add strategic logs
 2. Investigate issue with logs
-3. `/cleanup-web` - Remove all debug artifacts
-4. `/commit` - Commit clean code
+3. `/debug-web:cleanup` - Remove all debug artifacts
+4. `/git:commit` - Commit clean code
 
 ### Code Review Flow
-1. `/review` - Quick review for git workflow stage
-2. `/review-orchestrator` - Comprehensive multi-reviewer analysis
+1. `/review-orchestrator` - Comprehensive multi-reviewer analysis
+2. Use specialist reviewers (e.g., `/reviewer:security`, `/reviewer:performance`)
 3. Address all findings
-4. `/commit` - Commit improvements
+4. `/git:commit` - Commit improvements
+
+### Parallel Quality Assurance Flow
+1. `/fix:all` - Run fix-types, fix-tests, and fix-lint in parallel
+2. Review results and address any blockers
+3. `/git:commit` - Commit all quality improvements
 </implementation_plan>
 
 ## 🚀 Performance Optimization
@@ -444,6 +459,36 @@ kill $LINT_PID $TEST_PID
 - Parallel quality checks don't block development
 - Continuous monitoring catches regressions early
 - Reduced manual quality check cycles
+
+4. **Affected Files Strategy**:
+<instructions>
+When running tests or lints, optimize by targeting affected files:
+- **First pass**: If affected files are unknown, run once against all files to identify issues
+- **Second pass**: Run affected files individually based on first pass results
+- **Benefits**: Faster iteration, clearer error isolation, better debugging context
+- **Pattern**:
+  1. Run full suite once: `npm run test` or `npm run lint`
+  2. Parse output to identify failing/erroring files
+  3. Re-run each affected file individually: `npm run test -- path/to/file.test.ts`
+  4. Fix issues one file at a time with isolated feedback
+</instructions>
+
+**Example workflow:**
+```bash
+# Step 1: Discover affected files
+npm run test 2>&1 | tee test-results.txt
+# Identify: auth.test.ts, user.test.ts failed
+
+# Step 2: Run affected files individually
+npm run test -- src/auth.test.ts
+# Fix auth issues...
+
+npm run test -- src/user.test.ts  
+# Fix user issues...
+
+# Step 3: Verify all passing
+npm run test
+```
 </background_quality>
 
 ### Communication Excellence
@@ -478,13 +523,16 @@ kill $LINT_PID $TEST_PID
 
 1. **Agent Selection Matrix**:
 ```
-Task Type          | Primary Agent    | Support Agents           | Concurrency
-File Analysis      | exploratory      | -                       | 1
-Type Fixing        | fix-types        | fix-lint                | 2
-Test Development   | fix-tests        | work-on-todos           | 2
-Feature Build      | vibe-code-workflow| fix-types, fix-tests    | 3
-Code Review        | review-orchestrator| multiple reviewers     | 5
+Task Type          | Primary Agent       | Support Agents           | Concurrency
+File Analysis      | Explore agent       | -                       | 1
+Type Fixing        | fix-types           | fix-lint                | 2
+Test Development   | fix-tests           | work-on-todos           | 2
+Feature Build      | vibe-code-workflow  | fix-types, fix-tests    | 3
+Code Review        | senior-code-reviewer| ui-engineer, ts-coder   | 3
+Documentation      | intelligent-docs    | ui-engineer, ts-coder   | 2
 ```
+
+**Note:** Use Task tool with `subagent_type` parameter (e.g., Explore, fix-types, code-reviewer, etc.)
 
 2. **Aggregation Patterns**:
 - **Collect Results**: Gather outputs from all parallel agents

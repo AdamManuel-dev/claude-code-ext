@@ -2,7 +2,7 @@
 name: work-on-todos
 description: "TODO execution specialist. PROACTIVELY works through TODO items systematically with priority-based implementation and comprehensive progress tracking."
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite, Task
-model: claude-sonnet-4-20250514
+model: sonnet[1m]
 ---
 
 # TODO Implementation Specialist

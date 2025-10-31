@@ -1,6 +1,4 @@
 *
-!commands/
-!commands/*.md
 !install-ccsm.sh
 !README.md
 !.gitignore
@@ -24,12 +22,17 @@
 !QUICK_REFERENCE.md
 !.cursor/
 
+!commands/
+!commands/**
+!commands/*.md
 !docs/
 !docs/**
 !agents/
 !agents/**
 !tools/
 !tools/**
+!skills/
+!skills/**
 !.env.example
 
 # Ignore tools folder (contains potentially sensitive review tools)

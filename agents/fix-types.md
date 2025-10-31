@@ -2,7 +2,7 @@
 name: fix-types
 description: "TypeScript error specialist. PROACTIVELY fixes TypeScript compilation errors when detected, applying systematic type safety enforcement."
 tools: Read, Edit, MultiEdit, Bash, Grep, Glob, LS
-model: claude-sonnet-4-20250514
+model: sonnet[1m]
 ---
 
 # TypeScript Error Resolution Specialist
