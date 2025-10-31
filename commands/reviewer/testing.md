@@ -1,5 +1,7 @@
 **Testing Quality Reviewer**: Comprehensive test effectiveness, coverage analysis, and quality validation specialist.
 
+**Agent:** code-review
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

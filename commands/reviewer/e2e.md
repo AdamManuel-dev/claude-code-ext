@@ -1,5 +1,7 @@
 **End-to-End Testing Reviewer**: Comprehensive user journey validation and system integration testing specialist.
 
+**Agent:** code-review
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

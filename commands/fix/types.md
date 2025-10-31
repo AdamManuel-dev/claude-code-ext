@@ -1,5 +1,7 @@
 Analyze and fix TypeScript compilation errors with systematic type safety enforcement.
 
+**Agent:** fix-types
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

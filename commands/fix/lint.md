@@ -1,5 +1,7 @@
 Analyze and fix ESLint errors across the entire project with systematic rule-based corrections.
 
+**Agent:** fix-lint
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

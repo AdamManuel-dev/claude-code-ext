@@ -1,5 +1,7 @@
 Comprehensive multi-stage code review and improvement cycle with real-time dashboard, parallel reviewer execution, and automated git workflow integration.
 
+**Agents:** code-review, senior-code-reviewer, ui-engineer (orchestrated)
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

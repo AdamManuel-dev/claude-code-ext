@@ -1,5 +1,7 @@
 # Vibe Code Workflow
 
+**Agents:** fix-types, fix-tests, fix-lint, code-review (orchestrated)
+
 Execute a comprehensive development workflow based on the vibe coding methodology with enforced quality gates that prevent broken code from being committed or pushed.
 
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]

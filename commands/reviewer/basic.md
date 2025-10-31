@@ -1,5 +1,7 @@
 **Basic Code Quality Reviewer**: Detect anti-patterns, code smells, and fundamental quality issues through systematic analysis.
 
+**Agent:** code-review
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

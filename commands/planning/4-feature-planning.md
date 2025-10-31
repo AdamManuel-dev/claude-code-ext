@@ -1,5 +1,7 @@
 # Feature Planning Command
 
+**Agent:** strategic-planning
+
 Break down complex features into structured, actionable implementation plans with proper task relationships and dependencies.
 
 <instructions>

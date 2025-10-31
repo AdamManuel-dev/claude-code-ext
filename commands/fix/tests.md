@@ -1,5 +1,7 @@
 Analyze test failures, systematically debug and fix issues, with progress tracking.
 
+**Agent:** fix-tests
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

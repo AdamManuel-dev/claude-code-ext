@@ -1,5 +1,7 @@
 **Code Readability Reviewer**: Evaluate code clarity, developer experience, and maintainability from a readability perspective.
 
+**Agent:** code-review
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

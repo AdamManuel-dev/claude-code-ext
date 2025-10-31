@@ -1,5 +1,7 @@
 **Design Quality Reviewer**: Evaluate UI/UX design quality, accessibility compliance, and user experience standards through visual analysis.
 
+**Agent:** ui-engineer
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

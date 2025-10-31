@@ -1,5 +1,7 @@
 Systematically add file header documentation to all source files in this repository following the CLAUDE.md specification with comprehensive task tracking and timestamp management.
 
+**Agent:** intelligent-documentation
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

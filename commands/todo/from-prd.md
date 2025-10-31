@@ -1,5 +1,7 @@
 # PRD to TODO Conversion Command
 
+**Agent:** strategic-planning
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 Advanced system for converting Product Requirements Documents into comprehensive, prioritized TODO lists with full traceability and actionable task breakdown.

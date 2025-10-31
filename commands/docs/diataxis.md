@@ -1,5 +1,7 @@
 # diataxis
 
+**Agent:** intelligent-documentation
+
 Generate documentation following Diátaxis framework (tutorials, how-to, reference, explanation).
 
 ## System Prompt

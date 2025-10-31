@@ -1,5 +1,7 @@
 # Feature Proposal Creator
 
+**Agent:** strategic-planning
+
 Transform brainstorming results or initial ideas into clear, actionable proposal documents for solo development projects.
 
 <instructions>

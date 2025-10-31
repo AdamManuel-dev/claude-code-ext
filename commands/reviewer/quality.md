@@ -1,5 +1,7 @@
 **Code Quality Reviewer**: Evaluate code quality, best practices, and maintainable patterns following industry standards.
 
+**Agent:** code-review
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

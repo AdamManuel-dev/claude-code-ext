@@ -1,5 +1,7 @@
 # Feature PRD Creator
 
+**Agent:** strategic-planning
+
 Transform feature proposals into comprehensive Product Requirements Documents optimized for AI-assisted implementation.
 
 <instructions>

@@ -1,5 +1,7 @@
 **Security Vulnerability Reviewer**: Comprehensive security threat detection and secure coding practices evaluation.
 
+**Agent:** senior-code-reviewer
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

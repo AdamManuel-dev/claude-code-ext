@@ -1,5 +1,7 @@
 Execute TODO items systematically with priority-based implementation and comprehensive progress tracking.
 
+**Agent:** work-on-todos
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 <instructions>

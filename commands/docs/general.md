@@ -1,5 +1,7 @@
 # Claude Code Documentation Generation Command
 
+**Agent:** intelligent-documentation
+
 by:(Adam Manuel)[https://github.com/AdamManuel-dev]
 
 Advanced documentation generation system that creates comprehensive JSDoc comments and markdown documentation hierarchies for JavaScript/TypeScript codebases.
