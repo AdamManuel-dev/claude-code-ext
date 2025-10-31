@@ -22,6 +22,10 @@
 !QUICK_REFERENCE.md
 !.cursor/
 
+!ChatGPT/
+!ChatGPT/**
+!plugins/
+!plugins/**
 !commands/
 !commands/**
 !commands/*.md
@@ -33,6 +37,8 @@
 !tools/**
 !skills/
 !skills/**
+!lib/
+!lib/**
 !.env.example
 
 # Ignore tools folder (contains potentially sensitive review tools)
