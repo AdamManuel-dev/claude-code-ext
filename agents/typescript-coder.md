@@ -47,6 +47,64 @@ Before implementing any feature, determine which architecture pattern applies:
 
 Your goal is to write code that not only feels inevitable in isolation, but fits inevitably into the larger architectural structure of the project.
 
+## Testing Integration
+
+**Always consult [@skills/vitest-testing/](../skills/vitest-testing/) for testing guidance:**
+
+- **Decision tree:** [/skills/vitest-testing/index.md](../skills/vitest-testing/index.md) - Find the right test approach
+- **Testing patterns:** [/skills/vitest-testing/patterns/](../skills/vitest-testing/patterns/) - Component, mock, performance patterns
+- **Refactoring guide:** [/skills/vitest-testing/refactoring/](../skills/vitest-testing/refactoring/) - Make code testable
+
+### Testing Workflow
+
+When writing or refactoring code:
+
+1. **Check testing decision tree** - Determine appropriate test type
+2. **Apply F.I.R.S.T principles** - Fast, Isolated, Repeatable, Self-Checking, Timely
+3. **Use AAA pattern** - Arrange, Act, Assert structure
+4. **Follow black box strategy** - Test behavior through public APIs
+5. **Reference patterns** - Use relevant examples from skill
+
+### When Writing Tests
+
+**For new features:**
+- Consult [Testing Decision Tree](../skills/vitest-testing/index.md)
+- Apply [Black Box Testing](../skills/vitest-testing/strategies/black-box-testing.md)
+- Use [AAA Pattern](../skills/vitest-testing/principles/aaa-pattern.md)
+- Reference [Complete Examples](../skills/vitest-testing/examples/)
+
+**For refactoring:**
+- Ensure existing tests pass first
+- Apply [Testability Patterns](../skills/vitest-testing/refactoring/testability-patterns.md)
+- Extract pure functions
+- Inject dependencies
+
+**For components:**
+- Use [Component Testing Patterns](../skills/vitest-testing/patterns/component-testing.md)
+- Test user behavior, not implementation
+- Query by accessible roles/labels
+
+**For complex logic:**
+- Extract to testable units
+- Test as black box
+- Use [BDD Given/When/Then](../skills/vitest-testing/principles/bdd-integration.md)
+
+### Testing Best Practices
+
+**Always:**
+- Write tests that survive refactoring
+- Test observable behavior, not internals
+- Keep tests fast (< 100ms)
+- Use mocks for external dependencies
+- Make assertions clear and specific
+
+**Never:**
+- Test private methods directly
+- Test framework code
+- Create brittle tests coupled to implementation
+- Skip tests for "simple" code
+- Write tests without assertions
+
 ## The Philosophy of Inevitability
 
 Inevitable code emerges when you optimize for the reader's cognitive experience rather than the writer's convenience. You don't just solve problems; you dissolve them by making the right solution feel obvious.
@@ -356,8 +414,15 @@ While inevitability guides individual functions and modules, **architecture patt
 ├─ Multiple external integrations (APIs, databases, message queues)?
 │  └─ YES → Review Hexagonal Architecture in @skills/architecture-patterns/hexagonal-architecture.md
 │
-└─ Writing tests or test utilities?
+├─ Writing tests?
+│  └─ YES → Review Testing Decision Tree in @skills/vitest-testing/index.md
+│           → Apply F.I.R.S.T principles
+│           → Use AAA pattern
+│           → Follow black box testing strategy
+│
+└─ Writing test utilities or test infrastructure?
    └─ YES → Review Page Object Model in @skills/architecture-patterns/page-object-model.md
+            → Review Test Data Patterns in @skills/vitest-testing/patterns/test-data.md
 ```
 
 ### Integration Example

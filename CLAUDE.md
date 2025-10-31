@@ -36,6 +36,66 @@ PRIMARY DIRECTIVES:
 > **⚠️ IMPORTANT**: Use `/Users/adammanuel/.claude/tools/ack-notifications.sh` to automatically acknowledge and cancel ALL active notifications
 > **⚠️ IMPORTANT**: Use `/Users/adammanuel/.claude/tools/clickable-notification.sh "BRANCH_NAME" "MESSAGE"` for Cursor IDE integration
 > **⚠️ IMPORTANT**: Pattern search: `find . -name "*.ts" -o -name "*.js" -o -name "*.md" | xargs grep -l "pattern" | while read file; do echo "$file: $(grep "pattern" "$file")"; done`
+
+### Ripgrep Usage Guidelines
+
+**Ripgrep is installed and configured** at `/opt/homebrew/bin/rg` (version 14.1.1) with a wrapper script at `/Users/adammanuel/.claude/tools/rg-wrapper.sh` that provides fallback to grep.
+
+**When to use Ripgrep:**
+- Use the built-in `Grep` tool for most searches (it uses ripgrep internally)
+- For direct bash usage, ripgrep is available as `rg` command
+- The wrapper script handles missing ripgrep installations gracefully
+
+**Common Ripgrep Patterns:**
+```bash
+# Basic search with line numbers
+rg "pattern" path/ -n
+
+# Case-insensitive search
+rg "pattern" -i
+
+# Search specific file types
+rg "pattern" --type ts
+rg "pattern" --type js --type json
+
+# Search with context lines
+rg "pattern" -A 3 -B 3  # 3 lines after and before
+rg "pattern" -C 5       # 5 lines of context
+
+# Multiple patterns
+rg "pattern1|pattern2"
+
+# Exclude directories
+rg "pattern" --glob '!node_modules/**' --glob '!dist/**'
+
+# Show only filenames
+rg "pattern" -l
+
+# Count matches per file
+rg "pattern" -c
+```
+
+**Best Practices:**
+1. **Prefer the Grep tool** - It's optimized for Claude Code and handles permissions correctly
+2. **Use specific paths** - Narrow searches to relevant directories for faster results
+3. **File type filtering** - Use `--type` to limit searches to relevant file extensions
+4. **Escape special characters** - Use quotes and escaping for regex patterns: `rg "interface\{\}"`
+5. **Multiline patterns** - Use the Grep tool's `multiline: true` parameter for cross-line matches
+
+**Example Workflows:**
+```bash
+# Find all TODO comments in TypeScript files
+rg "TODO|FIXME" --type ts -n
+
+# Search for function definitions
+rg "function\s+\w+" --type js -n
+
+# Find imports of specific module
+rg "from ['\"]react['\"]" --type tsx --type ts
+
+# Search excluding test files
+rg "pattern" --glob '!**/*.test.ts' --glob '!**/*.spec.ts'
+```
 </do_not_strip>
 
 ## 📋 Development Standards

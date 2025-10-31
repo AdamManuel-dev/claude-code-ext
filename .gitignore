@@ -1,50 +1,136 @@
-*
-!install-ccsm.sh
-!README.md
-!.gitignore
-!CLAUDE.md
-!MCPs/
-!MCPs/*.sh
-!MCPs/mcp-postman/
-!MCPs/mcp-postman/**
-!MCPs/mcp-server-browserbase/
-!MCPs/mcp-server-browserbase/**
-!MCPs/mcp-server-simulator-ios-idb/
-!MCPs/mcp-server-simulator-ios-idb/**
-!MCPs/context7.sh
-!mcp-chatgpt-agent
-!MCPs/test-discover.zsh
-!MCPs/test-stagehand.js
-!MCPs/how-to-install.md
-!MCPs/README.md
-!tools/README.md
-!documentation-report.md
-!QUICK_REFERENCE.md
-!.cursor/
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-!ChatGPT/
-!ChatGPT/**
-!plugins/
-!plugins/**
-!commands/
-!commands/**
-!commands/*.md
-!docs/
-!docs/**
-!agents/
-!agents/**
-!tools/
-!tools/**
-!skills/
-!skills/**
-!lib/
-!lib/**
-!.env.example
+# Build artifacts
+dist/
+build/
+*.js
+*.js.map
+*.d.ts
+!*.config.js
+!*.config.*.js
 
-# Ignore tools folder (contains potentially sensitive review tools)
-commands/tools/
+# TypeScript cache
+*.tsbuildinfo
 
-# Environment variables and secrets
+# Logs
+logs/
+*.log
+agent.log
+history.jsonl
+
+# Session and runtime data
+session-env/
+shell-snapshots/
+.cache/
+
+# User-specific directories
+projects/
+todos/
+debug/
+statsig/
+.old_claude/
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Environment files
 .env
 .env.local
 .env.*.local
+.env.development
+.env.test
+.env.production
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Python (for MCP servers)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.mypy_cache/
+.pytest_cache/
+venv/
+ENV/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# MCP server specific
+MCPs/*/node_modules/
+MCPs/*/build/
+MCPs/*/dist/
+MCPs/*/npm-debug.log*
+
+# Settings that may contain sensitive data
+settings.json
+
+# Keep important configs
+!tsconfig.json
+!jest.config.js
+!.eslintrc.json
+!.prettierrc
+!vitest.config.ts
+!playwright.config.ts
+
+# Keep source files in lib/
+!lib/**/*.ts
+
+# Keep documentation
+!*.md
+!docs/**/*
+!README.md
+
+# Keep command and agent definitions
+!commands/**/*.md
+!commands/**/*.sh
+!agents/**/*.md
+!skills/**/*
+!tools/**/*.sh
+
+# Keep MCP source files
+!MCPs/**/*.ts
+!MCPs/**/*.json
+!MCPs/**/*.md
+!MCPs/**/*.sh
+!MCPs/**/*.yaml
+
+# But ignore their build outputs
+MCPs/**/build/
+MCPs/**/dist/

@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "stagehand": {
-      "command": "/Users/adammanuel/.claude/MCPs/stagehand.sh",
-      "args": []
-    }
-  }
-}
