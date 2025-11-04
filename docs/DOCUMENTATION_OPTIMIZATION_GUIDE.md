@@ -68,7 +68,7 @@ Phase 4: RESULT AGGREGATION (Serial)
 ```
 ┌──────────────────────────────────────────────────────┐
 │              Parent Process (Orchestrator)           │
-│  - File discovery & filtering                       │
+│  - File discovery & filtering                        │
 │  - Batch creation                                    │
 │  - Agent launching (parallel)                        │
 │  - Progress monitoring                               │
@@ -77,10 +77,10 @@ Phase 4: RESULT AGGREGATION (Serial)
                          │
          ┌───────────────┼───────────────┐
          │               │               │
-    ┌────▼────┐     ┌────▼────┐    ┌────▼────┐
-    │ Agent 1 │     │ Agent 2 │    │ Agent 3 │ ...
-    │ (haiku) │     │ (haiku) │    │ (haiku) │
-    └────┬────┘     └────┬────┘    └────┬────┘
+    ┌────▼────┐     ┌────▼────┐     ┌────▼────┐
+    │ Agent 1 │     │ Agent 2 │     │ Agent 3 │ ...
+    │ (haiku) │     │ (haiku) │     │ (haiku) │
+    └────┬────┘     └────┬────┘     └────┬────┘
          │               │               │
          └───────────────┼───────────────┘
                          │

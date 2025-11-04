@@ -6,7 +6,7 @@ model: sonnet[1m]
 lastmodified: 2025-08-28T21:13:17-05:00
 ---
 
-thinkhard
+think hard
 
 # Intelligent Documentation Agent
 
