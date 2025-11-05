@@ -25,7 +25,193 @@ PRIMARY DIRECTIVES:
 11. **Targeted Quality Checks**: When running tests or lint, scope execution to affected files; if the affected set is unknown, run the full suite once to discover it, then rerun only the identified files individually
 12. **Communication**: Use warm, easygoing explanatory tone that feels welcoming
 13. **Parallel Orchestration**: Prefer multiple parallel sub-agents in plan mode for efficiency
+14. **🎯 ROUTER SKILL**: ALWAYS use the router skill for intelligent request routing
 </instructions>
+
+## 🎯 Router Skill Integration
+
+<critical_directive>
+**MANDATORY ROUTER USAGE**
+
+The router skill MUST be used for ALL user requests to ensure intelligent routing to the most appropriate tools, agents, and commands.
+</critical_directive>
+
+### Router Activation
+
+<instructions>
+**At the start of EVERY conversation:**
+1. Automatically activate the router skill for intelligent request routing
+2. All user requests should be analyzed through the router's 5-phase process
+3. Router provides context-aware routing decisions with confidence scoring
+
+**The router skill is your intelligent orchestration layer that:**
+- Analyzes user intent (action, domain, scope, urgency)
+- Gathers project context (git status, diagnostics, file types)
+- Calculates confidence scores for routing decisions
+- Routes to optimal tools (Skills, Agents, Commands)
+- Handles multi-step workflows and orchestration
+- Provides transparent explanations for routing choices
+</instructions>
+
+### How Router Integration Works
+
+```
+User Request
+     ↓
+Router Skill Analyzes
+     ↓
+┌────┴────┐
+│ Phase 1 │ Intent Analysis (action, domain, scope, urgency)
+│ Phase 2 │ Context Gathering (git, diagnostics, files)
+│ Phase 3 │ Decision Engine (confidence scoring)
+│ Phase 4 │ Execution (single/sequential/parallel)
+│ Phase 5 │ Communication (transparent explanation)
+└────┬────┘
+     ↓
+Execute Selected Tool(s)
+     ↓
+Report Results
+```
+
+### Router Capabilities
+
+**50+ Routing Patterns:**
+- Action-based: fix, review, document, test, build, explore, plan, commit, deploy, optimize
+- Domain-based: TypeScript, React, security, testing, documentation, architecture, browser, AI
+- Context-aware: git status, diagnostics, file types, urgency signals
+- Multi-step: Sequential chains, parallel execution, hybrid workflows
+
+**10 Workflow Templates:**
+1. Feature Development (planning → implementation → quality → review → commit)
+2. Bug Fix (explore → fix → verify → review → commit)
+3. Code Review (pre-fixes → comprehensive → specialized → address → finalize)
+4. Documentation (structure → explore → generate → review)
+5. Testing (strategy → unit → integration → e2e → verify → coverage)
+6. Production Emergency (fast-path parallel fixes)
+7. Hotfix (minimal process, rapid deployment)
+8. Safe Refactoring (analysis → strategy → baseline → refactor → verify)
+9. Security Audit (scan → auth → validation → dependencies → compliance)
+10. Performance Optimization (baseline → analysis → optimize → verify)
+
+**Tool Integration:**
+- 3 Skills: playwright-skill, jsdoc, architecture-patterns
+- 12+ Agents: Explore, ui-engineer, ts-coder, senior-code-reviewer, ai-engineer, deployment-engineer, etc.
+- 20+ Commands: /fix:*, /git:*, /review:*, /planning:*, /docs:*
+
+### Router Usage Examples
+
+**Example 1: Simple Request**
+```
+User: "fix my typescript errors"
+Router: Analyzes → High confidence → Routes to /fix:types
+Result: Types fixed automatically
+```
+
+**Example 2: Ambiguous Request**
+```
+User: "test my website"
+Router: Analyzes → Low confidence → Asks clarifying questions
+Options: playwright-skill (manual), /reviewer:e2e (review), ui-engineer (build tests)
+User: Selects option → Router proceeds
+```
+
+**Example 3: Multi-Step Workflow**
+```
+User: "build, test, and commit new feature"
+Router: Detects workflow → Routes sequentially:
+  Stage 1: ui-engineer agent (build)
+  Stage 2: /fix:tests (test)
+  Stage 3: /git:commit (commit)
+Result: Complete workflow executed
+```
+
+**Example 4: Emergency**
+```
+User: "URGENT: production down"
+Router: Detects urgency → Emergency workflow → Parallel fixes
+Result: Fast-path resolution in ~5 minutes
+```
+
+### Router Communication Style
+
+The router provides transparent, warm explanations:
+
+**High Confidence:**
+```
+🎯 Routing to: /fix:types
+Found 5 TypeScript errors across 2 files.
+Executing now...
+```
+
+**Medium Confidence:**
+```
+🎯 Routing to: ui-engineer agent
+React component creation is ui-engineer's specialty.
+💡 Alternative: architecture-patterns skill for structure guidance
+```
+
+**Low Confidence:**
+```
+🤔 Multiple routing options available:
+1. playwright-skill - Manual browser testing
+2. /reviewer:e2e - Review test coverage
+3. ui-engineer - Build test infrastructure
+Which approach fits your goal?
+```
+
+### Router Benefits
+
+✅ **Context-Aware**: Considers git status, diagnostics, file types
+✅ **Intelligent**: 50+ patterns with confidence scoring
+✅ **Educational**: Shows shortcuts and learning tips
+✅ **Efficient**: Orchestrates multi-step workflows automatically
+✅ **Transparent**: Always explains routing decisions
+✅ **Adaptive**: Learns from corrections and feedback
+
+### Documentation
+
+**Quick Reference:**
+- router-README.md - Quick start guide
+- router-guide.md - Complete user manual (17KB)
+- router-examples.md - 25+ scenarios
+- router-decision-tree.md - Visual flowcharts
+
+**Implementation:**
+- router.md - Main skill (32KB)
+- router-patterns.md - Pattern library (24KB)
+- router-workflows.md - Workflow templates (22KB)
+- router-context.sh - Context gathering script
+
+**Location:** `~/.claude/skills/router.md` and supporting files
+
+### Router Integration Rules
+
+<rules>
+1. **Always Analyze First**: Use router's intent analysis before executing
+2. **Respect Confidence**: Follow router's confidence-based communication style
+3. **Handle Ambiguity**: Ask clarifying questions when confidence is low
+4. **Orchestrate Workflows**: Use router's workflow templates for complex tasks
+5. **Provide Alternatives**: Show alternative options when multiple routes viable
+6. **Learn from Feedback**: Adjust routing based on user corrections
+7. **Emergency Fast-Path**: Recognize urgency signals and use fast-path routing
+8. **Context is Key**: Always gather and use project context for routing
+9. **Transparent Communication**: Explain why specific routes were chosen
+10. **Educational Tips**: Teach users direct invocation shortcuts
+</rules>
+
+### When Router is Active
+
+The router skill should be considered active for ALL requests. This means:
+
+- ✅ Analyze every user request through router's phases
+- ✅ Use router's pattern matching for tool selection
+- ✅ Apply router's confidence scoring for communication style
+- ✅ Leverage router's workflows for multi-step tasks
+- ✅ Provide router-style transparent explanations
+- ✅ Offer alternatives when multiple routes viable
+- ✅ Handle emergencies with router's fast-path logic
+
+The router acts as your **intelligent decision-making layer** that ensures every request is routed to the optimal tool with appropriate context and explanation.
 
 ## 🛠️ Critical System Tools
 
@@ -293,7 +479,10 @@ ALWAYS end responses with actionable next steps based on current context:
 - `/planning:prd` - PRD development (commands/planning/3-feature-prd.md)
 - `/planning:feature` - Feature planning & strategy (commands/planning/4-feature-planning.md)
 </item>
-<item n="5" category="Code Review Specialists">
+<item n="5" category="Code Review">
+- `/code-review-prep` - Author pre-PR preparation and validation (commands/code-review-prep.md)
+- `/code-review-init` - Initialize PR template, CODEOWNERS, and team docs (commands/code-review-init.md)
+- `/code-review-metrics` - Track review health metrics and improvement (commands/code-review-metrics.md)
 - `/reviewer:basic` - Anti-pattern detection (commands/reviewer/basic.md)
 - `/reviewer:design` - UI/UX design review (commands/reviewer/design.md)
 - `/reviewer:e2e` - E2E test effectiveness (commands/reviewer/e2e.md)

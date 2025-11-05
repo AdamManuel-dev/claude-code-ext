@@ -1,12 +1,12 @@
 /**
 
 * @fileoverview Linear Phase Orchestrator for parallel task execution with dependency management, conflict resolution, and comprehensive quality assurance
-* @lastmodified 2025-11-03T23:27:34Z
+* @lastmodified 2025-11-04T09:25:31Z
 *
-* Features: Parallel agent orchestration, dependency graph analysis, conflict detection/resolution, unified code review, Linear synchronization
-* Main APIs: Phase discovery, parallel implementation, conflict resolution, code review, Linear updates
+* Features: Parallel agent orchestration, dependency graph analysis, implementation readiness scoring, conflict detection/resolution, unified code review, Linear synchronization
+* Main APIs: Phase discovery, readiness assessment, parallel implementation, conflict resolution, code review, Linear updates
 * Constraints: Requires Linear MCP server, max 5 parallel agents, git repository with branch strategy
-* Patterns: Topological sort for dependencies, DFS cycle detection, baseline test comparison, coordinated agent logging
+* Patterns: Topological sort for dependencies, DFS cycle detection, predictive readiness scoring (0-100), baseline test comparison, coordinated agent logging
  */
 
 Execute an entire phase of Linear tasks in parallel with automated orchestration, implementation, code review, and completion tracking.
@@ -155,6 +155,136 @@ If Linear MCP tools are not available, configure the Linear MCP server first:
   * Max 5 parallel agents recommended (resource limits)
   * Prioritize by: Priority × Complexity × Dependencies
   * Balance workload across agents
+
+**3.2. Implementation Readiness Score:**
+
+Calculate readiness score (0-100) to predict integration challenges:
+
+```
+Scoring Algorithm:
+
+1. Task Complexity Factor (0-25 points):
+   - All Simple tasks: 25 points
+   - Mix Simple/Moderate: 20 points
+   - Mix Moderate/Complex: 15 points
+   - Any Complex tasks: 10 points
+   - Multiple Complex tasks: 5 points
+
+2. Shared Resource Risk (0-25 points):
+   - No shared files: 25 points
+   - 1-2 shared files (low conflict): 20 points
+   - 3-5 shared files (moderate conflict): 15 points
+   - 6-10 shared files (high conflict): 10 points
+   - 10+ shared files (very high conflict): 5 points
+
+3. Dependency Complexity (0-25 points):
+   - All independent (parallel group 1 only): 25 points
+   - 2 dependency groups: 20 points
+   - 3 dependency groups: 15 points
+   - 4+ dependency groups: 10 points
+   - Deep dependency chains (4+ levels): 5 points
+
+4. Codebase Stability (0-25 points):
+   - Check git history for affected areas:
+     * No recent changes (30+ days): 25 points
+     * Recent changes (7-30 days): 20 points
+     * Very recent changes (1-7 days): 15 points
+     * Active development (multiple commits/day): 10 points
+     * Recent conflicts or reverts: 5 points
+
+   Git command to analyze:
+   ```bash
+   # Check change frequency in last 30 days for affected paths
+   git log --since="30 days ago" --oneline -- {affected-paths} | wc -l
+   ```
+
+Total Score = Sum of all factors
+
+Readiness Levels:
+┌────────────────────────────────────────────────┐
+│ 90-100: 🟢 HIGH READINESS                      │
+│ - Proceed with confidence                      │
+│ - Minimal integration risks                    │
+│ - Optimal parallelization                      │
+│                                                │
+│ 70-89: 🟡 GOOD READINESS                       │
+│ - Minor coordination needed                    │
+│ - Monitor shared file modifications            │
+│ - Standard conflict resolution expected        │
+│                                                │
+│ 50-69: 🟠 MODERATE READINESS                   │
+│ - Significant coordination required            │
+│ - High conflict probability                    │
+│ - Consider serializing some tasks              │
+│ - Extended conflict resolution phase expected  │
+│                                                │
+│ 0-49: 🔴 LOW READINESS                         │
+│ - Major integration challenges predicted       │
+│ - Consider breaking into smaller phases        │
+│ - Risk of substantial rework                   │
+│ - Recommend architectural planning first       │
+└────────────────────────────────────────────────┘
+```
+
+**Risk Factor Details:**
+
+```
+For each risk factor, provide breakdown:
+
+Example output:
+┌─────────────────────────────────────────────────┐
+│ 📊 IMPLEMENTATION READINESS SCORE: 78/100       │
+│ Level: 🟡 GOOD READINESS                        │
+├─────────────────────────────────────────────────┤
+│ Task Complexity Factor:          20/25 points   │
+│ - 3 Simple, 2 Moderate tasks                    │
+│                                                 │
+│ Shared Resource Risk:            15/25 points   │
+│ - 4 shared files detected:                      │
+│   * src/types/user.ts (3 tasks)                 │
+│   * src/routes/auth.ts (2 tasks)                │
+│   * src/utils/validation.ts (2 tasks)           │
+│   * src/config/constants.ts (2 tasks)           │
+│                                                 │
+│ Dependency Complexity:           25/25 points   │
+│ - All tasks independent (1 parallel group)      │
+│                                                 │
+│ Codebase Stability:              18/25 points   │
+│ - auth module: 3 commits in last 7 days         │
+│ - types module: stable (no changes 45 days)     │
+│ - utils module: stable (no changes 60 days)     │
+├─────────────────────────────────────────────────┤
+│ 📋 RECOMMENDATIONS:                             │
+│ ✓ Proceed with phase execution                  │
+│ ⚠ Monitor auth.ts and types/user.ts closely     │
+│ ⚠ Coordinate type changes through comments      │
+│ ⚠ Plan 10-15 min for conflict resolution        │
+└─────────────────────────────────────────────────┘
+```
+
+**Readiness-Based Execution Strategy:**
+
+```
+If score >= 70:
+  → Proceed with standard parallel execution
+  → Use standard conflict resolution approach
+
+If score 50-69:
+  → Increase coordination:
+    * Pre-assign file ownership where possible
+    * Use separate branches per task group
+    * Schedule merge points between groups
+  → Allocate extra time for integration (30-50% more)
+  → Consider hybrid serial/parallel approach
+
+If score < 50:
+  → PAUSE and present alternatives to user:
+    Option 1: Break phase into 2-3 smaller sub-phases
+    Option 2: Serialize high-risk tasks, parallelize safe ones
+    Option 3: Refactor shared modules first (preparatory phase)
+    Option 4: Proceed with acknowledged high risk
+  → Require explicit user approval to continue
+```
 
 **3.5. Shared Files Detection & Conflict Prediction:**
 
@@ -804,11 +934,18 @@ Complete the Learned Lessons section using the template from CLAUDE.md:
 - [Note security vulnerabilities identified and fixed]
 - [Record edge cases discovered and handled]
 
+**Readiness Score Validation:**
+- [Compare predicted readiness score to actual integration complexity]
+- [Note if conflict resolution took more/less time than estimated]
+- [Identify risk factors that were accurately/inaccurately predicted]
+- [Suggest improvements to scoring algorithm based on outcomes]
+
 **Next Time Improvements:**
 - [Suggest better parallelization strategies for future]
 - [Document agent coordination improvements needed]
 - [Note quality gate optimizations identified]
 - [Recommend workflow enhancements]
+- [Readiness score calibration adjustments]
 ```
 
 This section must be completed before phase conclusion and included in the final output.
@@ -990,12 +1127,13 @@ EOF
 
 1. **Task Discovery:** Fetch all phase tasks from Linear
 2. **Dependency Analysis:** Build execution graph
-3. **Parallel Groups:** Identify independent task groups
-4. **Agent Launch:** Launch multiple agents IN PARALLEL using single message with multiple Task tool calls
-5. **Result Aggregation:** Collect and merge all agent results
-6. **Unified Review:** Single comprehensive review of all changes
-7. **Coordinated Fixes:** Parallel or coordinated fix implementation
-8. **Phase Completion:** Bulk Linear updates and unified commit
+3. **Readiness Assessment:** Calculate implementation readiness score (0-100)
+4. **Parallel Groups:** Identify independent task groups
+5. **Agent Launch:** Launch multiple agents IN PARALLEL using single message with multiple Task tool calls
+6. **Result Aggregation:** Collect and merge all agent results
+7. **Unified Review:** Single comprehensive review of all changes
+8. **Coordinated Fixes:** Parallel or coordinated fix implementation
+9. **Phase Completion:** Bulk Linear updates and unified commit
 
 **Agent Coordination:**
 * **ts-coder agents:** Run in parallel for independent tasks
@@ -1135,6 +1273,33 @@ EOF
 
 **Dependencies:** None (all independent)
 **Parallelization:** All 5 tasks can execute in parallel
+
+┌─────────────────────────────────────────────────┐
+│ 📊 IMPLEMENTATION READINESS SCORE: 82/100       │
+│ Level: 🟡 GOOD READINESS                        │
+├─────────────────────────────────────────────────┤
+│ Task Complexity Factor:          20/25 points   │
+│ - 3 Simple, 2 Moderate tasks                    │
+│                                                 │
+│ Shared Resource Risk:            20/25 points   │
+│ - 2 shared files detected:                      │
+│   * src/routes/auth.ts (ENG-103, ENG-104)       │
+│   * src/types/auth.ts (ENG-101, ENG-103)        │
+│                                                 │
+│ Dependency Complexity:           25/25 points   │
+│ - All tasks independent (1 parallel group)      │
+│                                                 │
+│ Codebase Stability:              17/25 points   │
+│ - auth module: 2 commits in last 14 days        │
+│ - routes: stable (no changes 30+ days)          │
+│ - types: stable (no changes 45 days)            │
+├─────────────────────────────────────────────────┤
+│ 📋 RECOMMENDATIONS:                             │
+│ ✓ Proceed with standard parallel execution      │
+│ ⚠ Monitor src/routes/auth.ts for conflicts      │
+│ ⚠ Coordinate type additions in auth.ts          │
+│ ⚠ Estimated conflict resolution: 5-10 minutes   │
+└─────────────────────────────────────────────────┘
 
 ## 2. Branch Created
 **Branch:** phase/user-auth-20240115-103000
@@ -1412,6 +1577,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
    * Phase identifier and filter used
    * Tasks found: count and list
    * Dependency analysis
+   * **Implementation Readiness Score (with breakdown)**
    * Parallelization strategy
 
 2. **Parallel Execution Report**
@@ -1513,8 +1679,15 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 * [Integration issues caught early]
 * [Security vulnerabilities identified and fixed]
 
+**Readiness Score Validation:**
+* [Compare predicted readiness score to actual integration complexity]
+* [Note if conflict resolution took more/less time than estimated]
+* [Identify risk factors that were accurately/inaccurately predicted]
+* [Suggest improvements to scoring algorithm based on outcomes]
+
 **Next Time Improvements:**
 * [Better parallelization strategies discovered]
 * [Agent coordination improvements needed]
 * [Quality gate optimizations identified]
+* [Readiness score calibration adjustments]
 </learned_lessons_section>
