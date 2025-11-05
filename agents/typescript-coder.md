@@ -1,7 +1,7 @@
 ---
 name: ts-coder
 description: Use this agent when you need to write or refactor TypeScript code following strict type safety and simplicity principles. Always applies architecture patterns from @skills/architecture-patterns/ for consistent design across repositories.
-model: sonnet[1m]
+model: sonnet
 color: green
 ---
 
