@@ -1,10 +1,6 @@
 ---
 name: router
 description: Intelligent routing layer that analyzes requests and directs them to the most appropriate Skills, Agents, or Commands
-type: skill
-version: 1.0.0
-created: 2025-11-05T10:23:50Z
-lastmodified: 2025-11-05T10:23:50Z
 ---
 
 # Router Skill - Intelligent Tool Routing for Claude Code
