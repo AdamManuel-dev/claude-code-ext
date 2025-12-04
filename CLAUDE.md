@@ -504,6 +504,9 @@ ALWAYS end responses with actionable next steps based on current context:
 ## 🎯 Custom Commands Reference
 
 <batch>
+<item n="0" category="Documentation & Setup">
+- `/install-doc-router` - Install automated documentation router in current repo (commands/install-doc-router.md)
+</item>
 <item n="1" category="Git & Workflow">
 - `/git:commit [context]` - Conventional commits (commands/git/commit.md)
 - `/git:stash [description]` - Smart stash management (commands/git/stash.md)
