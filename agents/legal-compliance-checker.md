@@ -27,6 +27,7 @@ Monetizing children's apps requires careful navigation of protective regulations
 </example>
 color: red
 tools: Write, Read, MultiEdit, WebSearch, Grep
+model: opus
 ---
 
 ultrathink

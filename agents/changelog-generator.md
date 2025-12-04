@@ -1,6 +1,6 @@
 ---
 name: changelog-generator
-model: sonnet
+model: opus
 ---
 
 think hard

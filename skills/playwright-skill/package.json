@@ -17,6 +17,7 @@
     "general-purpose"
   ],
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "playwright": "^1.48.0"
   },
   "engines": {
