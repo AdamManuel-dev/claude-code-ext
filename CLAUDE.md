@@ -340,6 +340,54 @@ Every file must include comprehensive documentation:
 - JSDoc for non-trivial functions (no type annotations - TypeScript handles types)
 - Minimal inline comments - code should be self-documenting
 
+#### Code Anchors (@anchor) Convention
+**Purpose**: Enable stable links from documentation to code without brittle line numbers
+
+**When to Use**:
+- Add `@anchor` tags to high-value code that is frequently referenced in documentation
+- Use for primary classes, interfaces, functions, and types
+- Include in file header for file-level anchors
+- Add inline for function/class-level anchors
+
+**Naming Rules**:
+- Classes/Interfaces: `@anchor PascalCase` (e.g., `@anchor WorkflowExecutor`)
+- Functions/Methods: `@anchor camelCase` (e.g., `@anchor executeWorkflow`)
+- Types/Enums: `@anchor PascalCase` (e.g., `@anchor ExecutionContext`)
+- File-level: Use descriptive kebab-case or PascalCase based on primary export
+
+**Format Examples**:
+```typescript
+/**
+ * @fileoverview Workflow executor for orchestrating complete workflow execution
+ * @lastmodified 2025-12-03T00:00:00Z
+ * @anchor WorkflowExecutor
+ *
+ * Features: Complete workflow orchestration, error recovery
+ * Main APIs: executeWorkflow(), handleError()
+ */
+export class WorkflowExecutor {
+  /**
+   * Execute a complete workflow with error recovery
+   * @anchor executeWorkflow
+   */
+  async executeWorkflow(workflow: Workflow): Promise<WorkflowResult> {
+    // Implementation
+  }
+}
+```
+
+**Linking from Documentation**:
+```markdown
+See the [@WorkflowExecutor](packages/playwright-executor/src/workflow-executor.ts@WorkflowExecutor) implementation.
+See [@executeWorkflow](packages/playwright-executor/src/workflow-executor.ts@executeWorkflow) for the main execution logic.
+```
+
+**Benefits**:
+- Links survive code refactoring within the same file
+- Semantic and human-readable
+- IDE-friendly (works with go-to-definition)
+- Machine-parseable for documentation automation
+
 ### 3. Architecture Patterns
 
 #### Backend (AWS Lambda/Node.js)
