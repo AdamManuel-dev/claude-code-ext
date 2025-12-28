@@ -170,6 +170,7 @@ Workflow state is persisted to: `.claude/workflow-state.json`
 ### Abort Triggers
 
 User can abort at any checkpoint by saying:
+
 - "stop", "abort", "cancel", "pause", "save and quit"
 
 ### On Abort - Save State
@@ -1233,11 +1234,13 @@ Would you like me to create a detailed plan?
 ### Question Complexity Assessment
 
 **Simple Question** (single `Explore` agent):
+
 - Asks about one specific thing
 - Answer likely in one location
 - Examples: "Where is the auth middleware?", "What does this function do?"
 
 **Complex Question** (parallel `Explore` agents):
+
 - Spans multiple aspects
 - Requires cross-referencing
 - Examples: "How does the auth flow work end-to-end?", "What's the data model?"
@@ -1337,6 +1340,7 @@ Step 6/6: Pre-Commit Prep
 ### Refactoring Abort Conditions
 
 STOP immediately if:
+
 - Tests fail after refactoring
 - Behavior changes detected
 - Coverage drops below baseline
@@ -1353,6 +1357,7 @@ STOP immediately if:
 ### Risk Assessment
 
 Dependency updates are HIGH risk by default because:
+
 - Can introduce breaking changes
 - May have security implications
 - Can affect multiple parts of codebase
@@ -1416,6 +1421,7 @@ Task(subagent_type: "Explore", prompt: "Agent 3 task...")
 ### Parallel Execution Rules
 
 Launch in parallel (safe):
+
 - `/fix:types` + `/fix:lint` + `/fix:tests`
 - Multiple reviewers on same code (read-only)
 - Multiple `Explore` agents (read-only)
@@ -1423,6 +1429,7 @@ Launch in parallel (safe):
 ### Sequential Execution Rules
 
 Wait for completion:
+
 - Fix issues BEFORE re-running checks
 - Reviews BEFORE addressing findings
 - All checks pass BEFORE commit prep
